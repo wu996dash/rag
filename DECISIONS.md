@@ -38,3 +38,16 @@
 - **环境契约**（见 .env.example）：`LLM_BASE_URL` / `LLM_MODEL` / `MILVUS_URI` / `EMBED_DEVICE` / `EMBED_MODEL_PATH` / `RERANKER_PATH`；密钥优先 `LLM_API_KEY`，回落系统变量 `DASHSCOPE_API_KEY`（2026-10-19 实测 qwen-plus 200）。
 - 本机事实：Python 3.12.4、Node 24、RTX 4060 8GB、无 Docker（Milvus 已在跑，不需要）、19531 端口连通已验证；`DASHSCOPE_API_KEY`（User 作用域）与 `DEEPSEEK_API_KEY` 均已在系统环境变量。
 - 模型权重复用本机已有下载（勿重复拉取）：`E:\edurag\Itcast_qa_system\rag_qa\models\bge-m3`（pytorch_model.bin 2.2GB）与同目录 `bge-reranker-v2-m3`（safetensors 2.2GB）；两者可同时驻留 8GB 显存。
+## D8 查询理解与检索修正层（M4，G-038 实证驱动）—— 2026-10-19
+
+- **定案**：问答链路前置 `query_rewrite` 节点（qwen-plus 把叙事提问扩展为法学术语串，改写查询同时用于召回、导航与重排）；制度页建向量索引 `legal_concepts` 做语义导航；引用合法源 = 重排 top-5 ∪ 导航制度页【原文】块（制度页逐字性已由 lint 链保证）。
+- 背景：M3 唯一真实失败 G-038——叙事问题与抽象法条存在词汇墙，纯稠密与纯稀疏均失效；修复后该题回答完整正确、REF 全过核验。
+
+## D9 时效权威位置 —— wiki frontmatter（检索 post-gate 过滤），Milvus status 仅快照
+
+- **定案**：废止/恢复以条文页 `status` 为唯一权威，向量层召回后按 wiki 状态过滤（`include_abolished=True` 可显式查废止层）；Milvus 标量更新受最终一致性延迟影响，不作为过滤保证。
+- 放弃：仅靠 Milvus 标量 filter（实测 pymilvus 3.0 + Milvus 2.4.4 强一致读仍存在写后延迟，一拍滞后）。
+
+## D10 待办确认
+
+- GPU 版 torch 未装成（download.pytorch.org 本机 DNS 不通）；CPU 推理可用（改写后单题 ~30-60s），M5+ 可从 PyPI 主站或镜像尝试。
