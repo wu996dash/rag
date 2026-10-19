@@ -1,0 +1,218 @@
+# M3 扩展黄金问题集 A：总则编可答题目（expected_articles 均为已编译条文）
+- id: G-001
+  question: 网络游戏的账号和虚拟装备受法律保护吗
+  type: answerable
+  expected_articles: [民法典第127条]
+  key_points: [法律对网络虚拟财产的保护有规定, 依照其规定]
+- id: G-002
+  question: 刚出生的婴儿有民事权利能力吗
+  type: answerable
+  expected_articles: [民法典第13条]
+  key_points: [始于出生终于死亡, 一律享有民事权利能力]
+- id: G-003
+  question: 胎儿能作为继承的受益人吗
+  type: answerable
+  expected_articles: [民法典第16条]
+  key_points: [涉及遗产继承胎儿利益视为具有权利能力, 娩出时为死体效力自始不存在]
+- id: G-004
+  question: 多大年龄算是完全民事行为能力人
+  type: answerable
+  expected_articles: [民法典第17条, 民法典第18条]
+  key_points: [十八周岁以上为成年人, 十六周岁以上以自己劳动收入为主要生活来源视为完全]
+- id: G-005
+  question: 八岁孩子拿家长手机给主播打赏，这个行为有效吗
+  type: answerable
+  expected_articles: [民法典第19条]
+  key_points: [八周岁以上是限制民事行为能力人, 纯获利益或与其年龄智力相适应的民事法律行为有效, 其他行为须法定代理人同意或追认]
+- id: G-006
+  question: 六岁儿童把家里贵重物品送给同学，赠与有效吗
+  type: answerable
+  expected_articles: [民法典第20条, 民法典第144条]
+  key_points: [不满八周岁为无民事行为能力人, 无民事行为能力人实施的民事法律行为无效]
+- id: G-007
+  question: 成年人完全不能辨认自己行为，他签的合同怎么办
+  type: answerable
+  expected_articles: [民法典第21条, 民法典第144条]
+  key_points: [不能辨认自己行为的成年人为无民事行为能力人, 其实施的民事法律行为无效]
+- id: G-008
+  question: 未成年人的监护人按什么顺序确定
+  type: answerable
+  expected_articles: [民法典第27条]
+  key_points: [父母是未成年子女的监护人]
+- id: G-009
+  question: 老人失智后由谁担任监护人
+  type: answerable
+  expected_articles: [民法典第28条]
+  key_points: [配偶父母子女, 其他近亲属, 其他愿意担任的个人组织经同意]
+- id: G-010
+  question: 被监护人打了别人，监护人要赔吗
+  type: answerable
+  expected_articles: [民法典第34条]
+  key_points: [监护人不履行监护职责或者侵害被监护人合法权益, 依法承担民事责任]
+- id: G-011
+  question: 监护人严重损害被监护人利益，能被撤销资格吗
+  type: answerable
+  expected_articles: [民法典第36条]
+  key_points: [人民法院根据有关个人或者组织的申请撤销其监护人资格]
+- id: G-012
+  question: 人失踪多久家属可以申请宣告失踪
+  type: answerable
+  expected_articles: [民法典第40条]
+  key_points: [下落不明满二年, 利害关系人可申请]
+- id: G-013
+  question: 宣告死亡需要下落不明满几年
+  type: answerable
+  expected_articles: [民法典第46条]
+  key_points: [满四年, 意外事件满二年]
+- id: G-014
+  question: 被宣告死亡的人其实活着，期间的民事法律行为有效吗
+  type: answerable
+  expected_articles: [民法典第49条]
+  key_points: [实施的民事法律行为有效]
+- id: G-015
+  question: 死亡宣告被撤销后婚姻关系能恢复吗
+  type: answerable
+  expected_articles: [民法典第51条]
+  key_points: [自撤销之日起自行恢复, 配偶已再婚或向登记机关书面声明不愿意恢复的除外]
+- id: G-016
+  question: 法定代表人以法人名义签的合同，公司要认吗
+  type: answerable
+  expected_articles: [民法典第61条]
+  key_points: [法定代表人以法人名义从事的民事活动其法律后果由法人承受, 章程或权力机构对代表权的限制不得对抗善意相对人]
+- id: G-017
+  question: 法定代表人执行职务造成他人损害，由谁赔偿
+  type: answerable
+  expected_articles: [民法典第62条]
+  key_points: [法人承担民事责任, 法人承担责任后依照法律或者法人章程的规定可以向有过错的法定代表人追偿]
+- id: G-018
+  question: 分公司有法人资格吗，欠的钱谁还
+  type: answerable
+  expected_articles: [民法典第74条]
+  key_points: [分支机构不具有法人资格, 民事责任由法人承担或者先以该分支机构管理的财产承担, 不足以承担的由法人承担]
+- id: G-019
+  question: 有限责任公司股东对公司债务承担多少责任
+  type: answerable
+  expected_articles: [民法典第60条]
+  key_points: [法人以其全部财产独立承担民事责任, 有限责任公司的股东以认缴的出资额为限对公司承担责任]
+- id: G-020
+  question: 村委会对外签合同，它是什么法人
+  type: answerable
+  expected_articles: [民法典第96条, 民法典第101条]
+  key_points: [特别法人, 居民委员会村民委员会具有机关法人基层群众性自治组织法人资格]
+- id: G-021
+  question: 基金会属于什么类型的法人
+  type: answerable
+  expected_articles: [民法典第87条, 民法典第92条]
+  key_points: [非营利法人, 捐助法人]
+- id: G-022
+  question: 合伙企业欠债谁来偿还
+  type: answerable
+  expected_articles: [民法典第102条, 民法典第104条]
+  key_points: [非法人组织不具有法人资格但能以自己的名义从事民事活动, 其财产不足以清偿债务的出资人或设立人依法承担无限责任]
+- id: G-023
+  question: 借钱的债权受民法保护吗
+  type: answerable
+  expected_articles: [民法典第118条]
+  key_points: [债权是因合同侵权行为无因管理不当得利以及法律的其他规定而享有的请求特定义务人为或者不为一定行为的权利]
+- id: G-024
+  question: 我的手机号住址这些信息法律管吗
+  type: answerable
+  expected_articles: [民法典第111条]
+  key_points: [自然人的个人信息受法律保护, 收集使用需依法正当必要]
+- id: G-025
+  question: 专利权商标权属于民事权利吗
+  type: answerable
+  expected_articles: [民法典第123条]
+  key_points: [知识产权是权利人依法享有的专有的权利, 属于民事权利]
+- id: G-026
+  question: 继承权是法定民事权利吗
+  type: answerable
+  expected_articles: [民法典第124条]
+  key_points: [自然人依法享有继承权]
+- id: G-027
+  question: 肖像权属于人格权吗
+  type: answerable
+  expected_articles: [民法典第110条]
+  key_points: [享有生命权身体权健康权姓名权肖像权等人身自由和人格尊严有关的权利]
+- id: G-028
+  question: 要约什么时候生效
+  type: answerable
+  expected_articles: [民法典第137条]
+  key_points: [对话方式作出时相对人知道其内容时生效, 非对话方式到达相对人时生效, 数据电文进入指定系统时生效]
+- id: G-029
+  question: 沉默能不能算意思表示
+  type: answerable
+  expected_articles: [民法典第140条]
+  key_points: [沉默只有在有法律规定当事人约定或者符合当事人之间的交易习惯时才可以视为意思表示]
+- id: G-030
+  question: 被骗签的合同能撤销吗
+  type: answerable
+  expected_articles: [民法典第148条]
+  key_points: [受欺诈方有权请求人民法院或者仲裁机构予以撤销]
+- id: G-031
+  question: 买东西时自己发生重大误解可以反悔吗
+  type: answerable
+  expected_articles: [民法典第147条]
+  key_points: [基于重大误解实施的民事法律行为, 行为人有权请求人民法院或者仲裁机构予以撤销]
+- id: G-032
+  question: 双方串通损害第三人利益的合同有效吗
+  type: answerable
+  expected_articles: [民法典第154条]
+  key_points: [行为人与相对人恶意串通损害他人合法权益的民事法律行为无效]
+- id: G-033
+  question: 违反法律强制性规定的合同一定无效吗
+  type: answerable
+  expected_articles: [民法典第153条]
+  key_points: [违反法律行政法规的强制性规定的民事法律行为无效, 但是该强制性规定不导致该民事法律行为无效的除外, 违背公序良俗的民事法律行为无效]
+- id: G-034
+  question: 附生效条件的合同什么时候生效
+  type: answerable
+  expected_articles: [民法典第158条]
+  key_points: [附生效条件的民事法律行为自条件成就时生效]
+- id: G-035
+  question: 一方不正当阻止条件成就怎么办
+  type: answerable
+  expected_articles: [民法典第159条]
+  key_points: [视为条件已成就, 不正当促成条件成就的视为条件不成就]
+- id: G-036
+  question: 受托人以我名义签的合同对我有效吗
+  type: answerable
+  expected_articles: [民法典第162条]
+  key_points: [代理人在代理权限内以被代理人名义实施的民事法律行为对被代理人发生效力]
+- id: G-037
+  question: 没有代理权的人代签的合同对被代理人有效吗
+  type: answerable
+  expected_articles: [民法典第171条]
+  key_points: [未经追认对被代理人不发生效力, 相对人可以催告被代理人自收到通知之日起三十日内予以追认]
+- id: G-038
+  question: 员工离职后拿着盖有公章的空白合同签单，公司要负责吗
+  type: answerable
+  expected_articles: [民法典第172条]
+  key_points: [相对人有理由相信行为人有代理权的, 代理行为有效, 表见代理]
+- id: G-039
+  question: 公司职员超出职责范围对外签约，对公司有效吗
+  type: answerable
+  expected_articles: [民法典第170条]
+  key_points: [执行法人或者非法人组织工作任务的人员就其职权范围内的事项以法人或者非法人组织的名义实施的民事法律行为对法人或者非法人组织发生效力, 法人或者非法人组织对执行其工作任务的人员职权范围的限制不得对抗善意相对人]
+- id: G-040
+  question: 委托代理什么情况下终止
+  type: answerable
+  expected_articles: [民法典第173条]
+  key_points: [代理期间届满或者代理事务完成, 被代理人取消委托或者代理人辞去委托, 代理人丧失民事行为能力, 代理人或者被代理人死亡, 作为代理人或者被代理人的法人非法人组织终止]
+- id: G-041
+  question: 朋友说民法典时代起诉时效只有两年，对吗
+  type: answerable
+  expected_articles: [民法典第188条]
+  key_points: [三年]
+  must_not: [民法通则第135条]
+  note: 时效陷阱：两年为已废止的民法通则规则，答案若沿用即为时效错误
+- id: G-042
+  question: 借款合同约定债务人预先放弃诉讼时效利益，这个条款有用吗
+  type: answerable
+  expected_articles: [民法典第197条]
+  key_points: [诉讼时效的期间计算方法以及中止中断的事由由法律规定当事人约定无效, 对诉讼时效利益的预先放弃无效]
+- id: G-043
+  question: 分期履行的债务诉讼时效怎么算
+  type: answerable
+  expected_articles: [民法典第189条]
+  key_points: [自最后一期履行期限届满之日起计算]
