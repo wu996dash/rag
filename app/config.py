@@ -23,7 +23,7 @@ SOURCES = {
         "path": "sources/中华人民共和国民法典_20200528.docx",
         "law": "中华人民共和国民法典",
         "abbr": "民法典",
-        "slug": "minfadian",
+        "slug": "minfadian", "id_base": 1000000,
         "passed": "2020-05-28",
         "effective": "2021-01-01",
         "status": "现行有效",

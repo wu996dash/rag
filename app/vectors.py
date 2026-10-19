@@ -36,7 +36,7 @@ def ensure_collection():
     c = client()
     if config.MILVUS_COLLECTION in c.list_collections():
         return c
-    s = c.create_schema(auto_id=True, enable_dynamic_field=False)
+    s = c.create_schema(auto_id=False, enable_dynamic_field=False)
     s.add_field("id", DataType.INT64, is_primary=True)
     s.add_field("law", DataType.VARCHAR, max_length=128)
     s.add_field("article_no", DataType.VARCHAR, max_length=32)
@@ -58,7 +58,7 @@ def upsert_articles(name, lo, hi):
     recs = [r for r in parse_law(name) if lo <= r["no"] <= hi]
     texts = [f'{meta["abbr"]}第{r["no"]}条 {r["text"]}' for r in recs]
     vecs = embed(texts)
-    rows = [{"law": meta["law"], "article_no": str(r["no"]), "part": r["part"],
+    rows = [{"id": meta["id_base"] + r["no"], "law": meta["law"], "article_no": str(r["no"]), "part": r["part"],
              "chapter": r["chapter"], "status": meta["status"],
              "effective_date": meta["effective"], "source_path": meta["path"],
              "text": t, "embedding": v} for r, t, v in zip(recs, texts, vecs)]
