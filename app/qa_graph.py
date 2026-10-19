@@ -4,21 +4,26 @@ from typing import TypedDict
 from langgraph.graph import StateGraph, END
 class QAState(TypedDict, total=False):
     question: str
+    expanded: str
     nav: list
     hits: list
     top: list
     context: str
     answer: str
     report: dict
+def node_rewrite(st):
+    from .query_rewrite import rewrite
+    return {"expanded": rewrite(st["question"])}
 def node_nav(st):
     from .search import nav_select
-    return {"nav": nav_select(st["question"])}
+    return {"nav": nav_select(st.get("expanded") or st["question"])}
 def node_vsearch(st):
     from .search import vector_recall
-    return {"hits": vector_recall(st["question"])}
+    return {"hits": vector_recall(st.get("expanded") or st["question"])}
 def node_rerank(st):
     from .search import rerank
-    return {"top": rerank(st["question"], st["hits"])}
+    # 重排查询用语义桥接后的法学术语串（叙事题实测与法条文本词汇墙同解）
+    return {"top": rerank(st.get("expanded") or st["question"], st["hits"])}
 def node_assemble(st):
     from .answer import assemble
     return {"context": assemble(st["question"], st["nav"], st["top"])}
@@ -28,14 +33,15 @@ def node_generate(st):
 def node_verify(st):
     from .answer import verify
     from . import config
-    return {"report": verify(st["answer"], st["top"], config.REPO / "wiki" / "articles")}
+    return {"report": verify(st["answer"], st["top"], config.REPO / "wiki" / "articles", st.get("nav"))}
 def build():
     g = StateGraph(QAState)
-    for name, fn in [("nav_index", node_nav), ("vector_search", node_vsearch),
+    for name, fn in [("query_rewrite", node_rewrite), ("nav_index", node_nav), ("vector_search", node_vsearch),
                      ("rerank", node_rerank), ("assemble", node_assemble),
                      ("generate", node_generate), ("cite_verify", node_verify)]:
         g.add_node(name, fn)
-    g.set_entry_point("nav_index")
+    g.set_entry_point("query_rewrite")
+    g.add_edge("query_rewrite", "nav_index")
     g.add_edge("nav_index", "vector_search")
     g.add_edge("vector_search", "rerank")
     g.add_edge("rerank", "assemble")

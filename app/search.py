@@ -22,6 +22,15 @@ def _concepts():
                     "bg": _bigrams(title + heads), "links": links})
     return tuple(out)
 def nav_select(question, topk=3):
+    """M4：制度页向量导航优先，空库回退 bigram。"""
+    try:
+        from .conceptnav import nav_pages
+        pages = nav_pages(question, topk)
+        if pages:
+            return [{"name": p["name"], "title": p["title"], "body": p["body"],
+                     "bg": set(), "links": set()} for p in pages]
+    except Exception:
+        pass
     qb = _bigrams(question)
     scored = []
     for c in _concepts():
@@ -38,9 +47,27 @@ def nav_select(question, topk=3):
                 if d["name"] == l and d["name"] not in names and len(picked) < topk + 2:
                     picked.append(d); names.add(d["name"])
     return picked
-def vector_recall(question, k=20):
-    from .vectors import search
-    return search(question, k=k)
+
+def _wiki_status(article_no: str):
+    fp = config.REPO / "wiki" / "articles" / f"民法典第{article_no}条.md"
+    if not fp.exists():
+        return None
+    m = re.search(r"^status:\s*(\S+)\s*$", fp.read_text(encoding="utf-8"), re.M)
+    return m.group(1) if m else None
+
+def vector_recall(question, k=12, include_abolished=False):
+    """M4：稠密+稀疏 RRF 混合召回。"""
+    from .vectors import hybrid_search
+    hits = hybrid_search(question, k=k)
+    if include_abolished:
+        return hits
+    # 时效权威在 wiki frontmatter（Milvus 标量仅作冗余快照）：默认只回现行有效
+    out = []
+    for h in hits:
+        stt = _wiki_status(h["article_no"])
+        if stt in (None, "现行有效"):
+            out.append(h)
+    return out
 @lru_cache(maxsize=1)
 def _reranker():
     import torch
@@ -52,7 +79,10 @@ def _reranker():
 def rerank(question, hits, top=5):
     import torch
     tok, model = _reranker()
-    docs = [h["entity"]["text"][:800] for h in hits]
+    def _txt(h):
+        e = h.get("entity", h)
+        return e["text"]
+    docs = [_txt(h)[:800] for h in hits]
     scores = []
     with torch.no_grad():
         for i in range(0, len(docs), 4):
@@ -65,7 +95,7 @@ def rerank(question, hits, top=5):
     order = sorted(range(len(scores)), key=lambda j: -scores[j])
     out = []
     for j in order[:top]:
-        e = hits[j]["entity"]
+        e = hits[j].get("entity", hits[j])
         out.append({"law": e["law"], "article_no": e["article_no"], "text": e["text"],
                     "status": "现行有效", "score": round(float(scores[j]), 4)})
     return out

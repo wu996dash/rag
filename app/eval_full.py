@@ -4,7 +4,7 @@ import json, re, time, glob
 from . import config
 JUDGE_SYS = ("你是严格的法律 RAG 评测员。根据题目、系统回答、评分要点与给定条文，只输出 JSON："
  '{"kp":[每个要点1或0],"support":{"条文号":1或0——该条能否支撑回答中对它的引用主张},'
- '"repealed":0或1——回答是否把已废止规则当作现行依据（正确指出已废止则记0）,"refusal":0或1——回答是否为"依据不足"类拒答}')
+ '"repealed":0或1——回答是否把已废止规则当作现行依据（正确指出已废止则记0）,"refusal":0或1——回答是否为"依据不足"类拒答,"mustnot":[被违反的禁用概念——仅当该概念作为法律规则被错误主张时才算，日常语词巧合（如交通中断）不算]}')
 def judge(item, answer, top):
     from .llm import chat
     arts = "\n".join(f"第{r['article_no']}条: " + r["text"][:150].replace("\n", " ") for r in top)
@@ -32,11 +32,13 @@ def run_all():
         nb = it.get("type") == "no_basis"
         top = []
         try:
-            nav = nav_select(q)
-            hits = vector_recall(q, k=12)
-            top = rerank(q, hits, top=5)
+            from .query_rewrite import rewrite
+            eq = rewrite(q)
+            nav = nav_select(eq)
+            hits = vector_recall(eq, k=12)
+            top = rerank(eq, hits, top=5)
             ans = generate(assemble(q, nav, top))
-            rep = verify(ans, top, config.REPO / "wiki" / "articles")
+            rep = verify(ans, top, config.REPO / "wiki" / "articles", nav)
             answer = rep["answer"]
             j = judge(it, answer, top)
         except Exception as e:
@@ -54,7 +56,7 @@ def run_all():
             "cited": cited,
             "repealed": int(bool(j.get("repealed"))),
             "quotes_dropped": rep["quotes_dropped"],
-            "must_not_hit": [p for p in it.get("must_not", []) if str(p) in answer],
+            "must_not_hit": [str(x) for x in (j.get("mustnot") or [])],
             "answer": answer,
         }
         with open(fp, "a", encoding="utf-8") as fh:
