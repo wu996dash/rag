@@ -59,6 +59,6 @@
 
 ## 当前状态（2026-10-19）
 
-M2 已完成（2026-10-19）：qa_graph 六节点问答链路与 eval/ask CLI；总则编 204 条文页 + 24 制度页 + 官方 sources（终验 12/12）；检索评测 top-5 命中率 100%（eval/results/m2-retrieval-20261019.md）。环境资源已核验（2026-10-19）：`DASHSCOPE_API_KEY` 实测 qwen-plus 返回 200；bge-m3 与 bge-reranker-v2-m3 权重完整（`E:\edurag\Itcast_qa_system\rag_qa\models\`）；Milvus 127.0.0.1:19531 TCP 连通。下一步是 M3——黄金问题集扩至 >=50 题并做端到端答案质量评测（正确率/引用精确率/无据拒答/时效零容忍），修复 M2 暴露项：生成侧逐字引用纪律、依据不足时的 REF 纪律；建议安装 GPU torch 提速推理。
+M3 已完成（2026-10-19）：58 题端到端四维评测全部达标（96%/98%/100%/0 违规），生成侧逐字引用与 REF 纪律已加固，bad case 归因见 eval/results/m3-report-20261019.md。环境资源已核验（2026-10-19）：`DASHSCOPE_API_KEY` 实测 qwen-plus 返回 200；bge-m3 与 bge-reranker-v2-m3 权重完整（`E:\edurag\Itcast_qa_system\rag_qa\models\`）；Milvus 127.0.0.1:19531 TCP 连通。下一步是 M4——维护回路（增量入库、新法传导更新、废止标注）+ 检索召回增强（BGE-M3 稀疏/colbert 混合，修复 G-038 类叙事题失败模式）+ must_not 语境化 + GPU torch 提速。
 
 目录结构或规则发生变化时，在同一个提交里更新本文件与 任务描述.md；选型变化必须先更新 DECISIONS.md。
