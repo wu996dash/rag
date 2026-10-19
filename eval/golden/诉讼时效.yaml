@@ -1,0 +1,28 @@
+# 黄金问题种子集（M0，5 题；M3 扩至 >=50 题）
+# schema: id/question/expected_articles/key_points/must_not
+# must_not 违规=时效错误或编造，按"零容忍"判评测不通过
+- id: SOL-001
+  question: 别人欠我钱，诉讼时效是几年？从什么时候开始算？
+  expected_articles: [民法典第188条]
+  key_points: [三年, 知道或者应当知道权利受到损害以及义务人之日]
+  must_not: ["两年", "民法通则", "第135条"]
+- id: SOL-002
+  question: 我的权利被侵害快21年了但我一直不知道对方是谁，现在起诉还受保护吗？
+  expected_articles: [民法典第188条]
+  key_points: [二十年, 自权利受到损害之日起, 不予保护, 特殊情况可申请延长]
+  must_not: [诉讼时效中止]
+- id: SOL-003
+  question: 欠款三年多了，上个月对方微信回复说"下个月一定还"，还能起诉吗？
+  expected_articles: [民法典第195条]
+  key_points: [义务人同意履行义务, 中断, 重新计算]
+  must_not: [已过诉讼时效不能起诉]
+- id: SOL-004
+  question: 地震导致我半年没法出门起诉，诉讼时效会过吗？
+  expected_articles: [民法典第194条]
+  key_points: [最后六个月, 不可抗力, 中止, 原因消除之日起满六个月]
+  must_not: [中断, 重新计算]
+- id: SOL-005
+  question: 父亲的赡养费拖了四年多没给，主张还来得及吗？
+  expected_articles: [民法典第196条]
+  key_points: [请求支付赡养费, 不适用诉讼时效]
+  must_not: [三年已过]

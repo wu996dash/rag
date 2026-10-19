@@ -59,6 +59,6 @@
 
 ## 当前状态（2026-10-19）
 
-仓库处于 bootstrap：现有 任务描述.md（v0.2 选型定案）、本文件、DECISIONS.md、.env.example，代码与语料尚未创建。环境资源已核验（2026-10-19）：`DASHSCOPE_API_KEY` 实测 qwen-plus 返回 200；bge-m3 与 bge-reranker-v2-m3 权重完整（`E:\edurag\Itcast_qa_system\rag_qa\models\`）；Milvus 127.0.0.1:19531 TCP 连通。下一步是 M0——搭目录骨架、写 SCHEMA.md 初版、手工编译《民法典》诉讼时效制度组作为参照标准（见 任务描述.md 第 9 节）。
+M0 已完成（2026-10-19）：目录骨架、SCHEMA.md v0.1、sources 种子原文、诉讼时效参照页组 12 页、评测种子 5 题；app/ 代码尚未创建。环境资源已核验（2026-10-19）：`DASHSCOPE_API_KEY` 实测 qwen-plus 返回 200；bge-m3 与 bge-reranker-v2-m3 权重完整（`E:\edurag\Itcast_qa_system\rag_qa\models\`）；Milvus 127.0.0.1:19531 TCP 连通。下一步是 M1——先以官方下载文本替换 sources 并复检（SCHEMA.md §6），再脚本化 ingest_graph，按诉讼时效样板组（wiki/index.md 导航）批量编译总则编其余章节。
 
 目录结构或规则发生变化时，在同一个提交里更新本文件与 任务描述.md；选型变化必须先更新 DECISIONS.md。
