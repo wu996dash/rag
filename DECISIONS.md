@@ -35,5 +35,6 @@
 
 ## D7 工程基线 —— Python 3.12 + uv + ruff + pytest + argparse
 
-- **环境契约**（见 .env.example）：`LLM_BASE_URL` / `LLM_API_KEY` / `LLM_MODEL` / `MILVUS_URI` / `EMBED_DEVICE` / `RERANKER_PATH`。
-- 本机事实：Python 3.12.4、Node 24、RTX 4060 8GB、无 Docker（Milvus 已在跑，不需要）、19531 端口连通已验证。bge-m3（约 2.3GB）与 reranker（约 1.1GB）可同时驻留显存。
+- **环境契约**（见 .env.example）：`LLM_BASE_URL` / `LLM_MODEL` / `MILVUS_URI` / `EMBED_DEVICE` / `EMBED_MODEL_PATH` / `RERANKER_PATH`；密钥优先 `LLM_API_KEY`，回落系统变量 `DASHSCOPE_API_KEY`（2026-10-19 实测 qwen-plus 200）。
+- 本机事实：Python 3.12.4、Node 24、RTX 4060 8GB、无 Docker（Milvus 已在跑，不需要）、19531 端口连通已验证；`DASHSCOPE_API_KEY`（User 作用域）与 `DEEPSEEK_API_KEY` 均已在系统环境变量。
+- 模型权重复用本机已有下载（勿重复拉取）：`E:\edurag\Itcast_qa_system\rag_qa\models\bge-m3`（pytorch_model.bin 2.2GB）与同目录 `bge-reranker-v2-m3`（safetensors 2.2GB）；两者可同时驻留 8GB 显存。
