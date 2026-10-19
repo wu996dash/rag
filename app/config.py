@@ -16,6 +16,7 @@ LLM_API_KEY = env("LLM_API_KEY") or env("DASHSCOPE_API_KEY")  # 回落规则（�
 MILVUS_URI = env("MILVUS_URI", "http://127.0.0.1:19531")
 EMBED_DEVICE = env("EMBED_DEVICE", "cpu")
 EMBED_MODEL_PATH = env("EMBED_MODEL_PATH")
+RERANKER_PATH = env("RERANKER_PATH")
 MILVUS_COLLECTION = "legal_articles"
 # 官方文本登记册（sources/README 的机器可读镜像；新法入库须同步）
 SOURCES = {

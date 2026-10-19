@@ -1,0 +1,7 @@
+# viki_rag 依赖基线（环境：uv venv --system-site-packages，重依赖继承 anaconda base 的 torch 2.13.0+cpu / transformers 5.17）
+# 本仓库独立安装项：
+pymilvus>=3.0
+langgraph>=1.0
+python-dotenv
+pyyaml
+# GPU 加速升级路径（M4 前建议）：uv pip install torch --index-url https://download.pytorch.org/whl/cu124 后 .env 改 EMBED_DEVICE=cuda
