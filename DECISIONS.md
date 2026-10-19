@@ -1,0 +1,39 @@
+# DECISIONS.md — 技术选型决策记录
+
+选型于 2026-10-19 在 Plan 模式逐项确认，共 7 项（D1–D7）。任务描述.md §6 与 CLAUDE.md 工程规范引用这些编号。推翻任何一条须在此新增编号条目并写明理由，不要静默改选。
+
+## D1 主力 LLM 通道 —— OpenAI 兼容 API，默认通义 Qwen-Plus
+
+- **定案**：DashScope OpenAI 兼容端点，`LLM_MODEL=qwen-plus`；base_url/model 全走环境变量，换供应商不改代码。
+- 备选项：DeepSeek-V3（中文好、成本低，用户改选 Qwen-Plus）；Claude API（长文编译质量最好，但价格高且国内直连需代理）；本地 Ollama（本机未安装，8GB 显存只能跑 7~8B 量化模型，编译质量明显下降）。
+
+## D2 Embedding —— BGE-M3 本地推理
+
+- **定案**：FlagEmbedding，1024 维稠密向量，cuda fp16；OOM 自动降级 CPU（`EMBED_DEVICE`）。
+- 放弃：API Embedding（DashScope/OpenAI）——按量付费，且中文法律检索效果不如 BGE-M3。
+
+## D3 向量库 —— 用户自有 Milvus 服务器（127.0.0.1:19531）
+
+- **定案**：pymilvus `MilvusClient` 连接本机已运行的 Milvus；gRPC 端口 19531 已实测可达。collection `legal_articles`：pk(int64 auto) + law_name/article_no/status/effective_date/source_path（varchar 标量）+ text（varchar）+ embedding（FLOAT_VECTOR 1024, COSINE, HNSW M=16/efConstruction=200）；首次入库自动建 collection；稀疏向量列预留不启用。
+- 改选过程：BGE-M3+Qdrant 嵌入式（最初推荐；被用户已有 Milvus 实例取代）；Milvus Lite 嵌入式（放弃：已有服务器版，无需重复）；FAISS（放弃：增删要重建索引，维护回路易踩坑）。
+
+## D4 检索链路 —— 稠密 top-20 + 本地重排 top-5
+
+- **定案**：bge-reranker-v2-m3 本地 GPU 重排；直接对应"引用精确率 >= 95%"验收指标。
+- 放弃：纯稠密 top-k——相近条文（普通时效 vs 最长保护期）易混排，引用校验失败率升高。
+- 推迟：dense+sparse 混合检索 + RRF——schema 要多存稀疏列，留到 M4 之后按评测结果决定（M4 出口条件挂钩）。
+
+## D5 编排框架 —— LangGraph
+
+- **定案**：两个图：`ingest_graph`（parse → compile → link → embed&index）、`qa_graph`（nav_index ∥ vector_search → rerank → assemble → generate → cite_verify）；v1 不接 checkpointer。节点约定见 CLAUDE.md"LangGraph 图节点约定"。
+- 改选过程：自研轻量 Python（最初推荐，链路最透明；用户指定 LangGraph）。放弃：LlamaIndex——wiki 编译、传导更新等定制逻辑与框架抽象相冲突。
+
+## D6 首域与语料来源 —— 民法典总则编 + 手动入库
+
+- **定案**：v1 首个专题域为民法典总则编（诉讼时效制度组起步），验收指标以该域黄金问题集为准；文本从国家法律法规数据库 / 最高法官网手动下载入 sources/ 并登记来源。
+- v1 不做：爬虫、OCR、裁判文书网抓取。
+
+## D7 工程基线 —— Python 3.12 + uv + ruff + pytest + argparse
+
+- **环境契约**（见 .env.example）：`LLM_BASE_URL` / `LLM_API_KEY` / `LLM_MODEL` / `MILVUS_URI` / `EMBED_DEVICE` / `RERANKER_PATH`。
+- 本机事实：Python 3.12.4、Node 24、RTX 4060 8GB、无 Docker（Milvus 已在跑，不需要）、19531 端口连通已验证。bge-m3（约 2.3GB）与 reranker（约 1.1GB）可同时驻留显存。

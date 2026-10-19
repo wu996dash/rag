@@ -1,0 +1,25 @@
+# 机密（CLAUDE.md 红线5）：.env 不进仓库；.env.example 保留
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# 本地模型权重与向量缓存（向量数据本体在 Milvus，见 DECISIONS.md D3）
+model/
+vectors/*
+!vectors/*.yaml
+!vectors/*.md
+
+# 日志与临时文件
+*.log
+tmp/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
