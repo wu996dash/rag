@@ -56,3 +56,7 @@ section{flex:1;display:flex;flex-direction:column;min-width:0;padding:0 14px}
 .mform button{padding:9px 18px;border:0;border-radius:8px;background:#0a7d43;color:#fff;cursor:pointer}.okline{color:#0a7d43;font-size:13px}
 .mfiles{font-size:12.5px;color:#45536a;max-height:300px;overflow-y:auto;margin-top:10px}.mfiles div{padding:2px 0}
 .close{cursor:pointer;color:#6b7a8d;float:right;font-size:14px}
+.hrow{display:flex;align-items:baseline;gap:4px}
+.hrow .h1{flex:1}
+.hdel{color:#b6c1cf;font-size:12px;cursor:pointer;padding:0 2px}
+.hdel:hover{color:#b3261e}

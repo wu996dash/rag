@@ -97,3 +97,8 @@ def save_session(username, conv):
                 (username, username, MAX_CONV))
             cur.execute("SELECT COUNT(*) n FROM conversations WHERE username=%s", (username,))
             return cur.fetchone()["n"]
+def delete_session(username, cid):
+    with _conn() as c:
+        with c.cursor() as cur:
+            cur.execute("DELETE FROM conversations WHERE id=%s AND username=%s", (cid, username))
+            return cur.rowcount

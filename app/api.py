@@ -46,6 +46,14 @@ async def save_session(req: Request):
         return JSONResponse({"error": "未登录"}, status_code=401)
     b = await req.json()
     return {"ok": True, "count": auth.save_session(u["username"], b)}
+@app.delete("/api/sessions/{cid}")
+async def delete_session(cid: str, req: Request):
+    u = _who(req)
+    if not u:
+        return JSONResponse({"error": "未登录"}, status_code=401)
+    n = auth.delete_session(u["username"], cid)
+    return {"ok": n > 0}
+
 # ---------- 统计与原文 ----------
 @app.get("/api/stats")
 def stats():

@@ -16,7 +16,7 @@
       <button class="newchat" @click="newChat">＋ 新对话</button>
       <div class="h-title">最近对话（保留 5 条）</div>
       <div v-for="s in sessions" :key="s.id" class="hist" :class="{on: s.id===curId}" @click="openSession(s)">
-        <div class="h1">{{ s.title }}</div><div class="h2">{{ s.saved_at }}</div>
+        <div class="hrow"><div class="h1">{{ s.title }}</div><span class="hdel" title="删除该对话" @click.stop="delSession(s)">✕</span></div><div class="h2">{{ s.saved_at }}</div>
       </div>
       <button v-if="me.role==='admin'" class="matbtn" @click="matTab=true">📚 法律材料录入</button>
       <button class="logout" @click="logout">退出登录</button>
@@ -81,6 +81,12 @@ function logout(){localStorage.removeItem('vr_tk');token='';me.value=null;if(ws)
 function connect(){
   if(ws)ws.close()
   ws=new WebSocket(`${location.protocol==='https:'?'wss':'ws'}://${location.host}/ws/ask?token=${token}`)
+}
+async function delSession(s){
+  if(!confirm('删除对话「'+s.title+'」？不可恢复')) return
+  await fetch('/api/sessions/'+s.id, {method:'DELETE', headers:headers()})
+  if(curId.value===s.id) newChat()
+  loadSessions()
 }
 function newChat(){messages.value=[];curId.value='';convId='';sessionStorage.setItem('vr_cid','')}
 async function send(){
