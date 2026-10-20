@@ -64,3 +64,11 @@ serve.cmd            # 或 .venv\Scripts\python.exe -m uvicorn app.api:app --por
 
 - 网页每条回答下有 **👍/👎**，👎 附备注进 `eval/feedback.jsonl`（运行时数据，不进 git）→ `feedback` 命令查队列、`--draft` 一键生成评测题草稿（人工补 expected/key_points 后进 golden）
 - **夜间评测 automation**：每天 21:00 自动全量评测（约 15 分钟），硬指标破线（正确率<95% / 时效违规>0 / must_not>0 / 剔除激增）才通知你并归因；正常则静默归档提交。前提是电脑当时开着
+
+## 账号与角色（MySQL 存储，D16）
+
+- 访问 http://127.0.0.1:8100 需登录；注册账号默认为**普通用户**
+- 内置管理员：`admin / admin@2026`（首次登录后请改密：MySQL users 表重置或后续加改密页）
+- 管理员独有：侧栏「法律材料录入」（POST /api/materials，存 sources/ 并自动登记，编译仍走人工 ingest）
+- 会话记忆：每用户最近 5 条对话，服务端 MySQL 存储，跨设备跟随账号
+- 连接配置在 .env（MYSQL_USER=viki_rag 专用最小权限账号，root 仅用于建库建号）

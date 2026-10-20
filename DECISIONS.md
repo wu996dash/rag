@@ -81,3 +81,10 @@
 
 - **定案**：① Web 回答级 👍/👎（👎强制进人工复核队列，`feedback --draft` 半自动生成评测题，人工补 expected 后进 golden——反馈不直接改知识，只变成考卷）；② 每日 21:00 cron automation 跑全量评测，按 D14 硬指标报警、软指标静默归档，正常不打扰。
 - 边界：反馈数据 eval/feedback.jsonl 为运行时数据不进版本库；夜间任务依赖本机开机，缺跑不补（如需可靠值守再议云端）。
+
+
+## D16 账号体系与用户数据落库（2026-10-20）
+
+- **定案**：登录/注册 + 双角色（user/admin）+ 会话记忆（每人 LRU 5 条）；users/tokens/conversations 三表存本机 MySQL 8.0.12（127.0.0.1:3306），启动自动建库建表；应用使用**专用最小权限账号** viki_rag（仅授权 viki_rag 库），root 只在初始化用一次；密码 sha256+per-user salt+pepper。
+- 管理员专属接口 /api/materials：录入即登记（sources/README 自动追加"待核验待编译"），**不做自动编译**（保持人工核验闸门）；普通用户 403。
+- WS /ws/ask 强制 token 鉴权（4401）。验收：10 项断言全过（登录/隔离/LRU 6→5/403/录入落盘/WS 拒绝）。
