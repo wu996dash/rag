@@ -32,6 +32,7 @@ python -m app.cli eval                                   # 检索侧命中率
 python -m app.eval_full                                  # 全量四维评测（65题约6分钟，3并发）
 python -m app.eval_full --only 时效,J --workers 3        # 增量评测：按题目id/文件名过滤
 python -m app.cli ingest --lo 1 --hi 204                 # 增量入库（幂等）
+python -m app.cli feedback [--draft|--mark]             # 查看👎队列/生成题草稿/标记已复核
 ```
 
 ## 架构一图流
@@ -58,3 +59,8 @@ serve.cmd            # 或 .venv\Scripts\python.exe -m uvicorn app.api:app --por
 - 流式问答：改写/导航/召回/重排各阶段耗时实时可见，答案逐 token 输出，引用校验结果（OK/未通过/剔除）以标签呈现，点击即开对应条文页原文
 - 接口：`WS /ws/ask`（事件协议 stage|token|final|verify|done|error）、`GET /api/stats`、`GET /api/page?path=wiki/...md`
 - 前端开发模式：`cd web && npm run dev`（vite 代理到 8100）；生产构建 `npm run build` 后由 FastAPI 静态托管，单端口部署
+
+## 质量闭环（2026-10-20）
+
+- 网页每条回答下有 **👍/👎**，👎 附备注进 `eval/feedback.jsonl`（运行时数据，不进 git）→ `feedback` 命令查队列、`--draft` 一键生成评测题草稿（人工补 expected/key_points 后进 golden）
+- **夜间评测 automation**：每天 21:00 自动全量评测（约 15 分钟），硬指标破线（正确率<95% / 时效违规>0 / must_not>0 / 剔除激增）才通知你并归因；正常则静默归档提交。前提是电脑当时开着
