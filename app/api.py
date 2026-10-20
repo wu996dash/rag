@@ -18,7 +18,7 @@ def _warm():
 def stats():
     import glob
     a = len(list((config.REPO / "wiki" / "articles").glob("*.md")))
-    c = len([p for p in (config.REPO / "wiki" / "concepts").glob("*.md") if p.name != "README.md"])
+    n_concepts = len([p for p in (config.REPO / "wiki" / "concepts").glob("*.md") if p.name != "README.md"])
     ca = len([p for p in (config.REPO / "wiki" / "cases").glob("*.md") if p.name != "README.md"])
     srcs = len(list((config.REPO / "sources").glob("*.docx"))) + len([p for p in (config.REPO / "sources").glob("*.md") if p.name != "README.md"])
     rows = None
@@ -28,7 +28,7 @@ def stats():
         rows = sum(int(c.query(collection_name=config.MILVUS_COLLECTION, filter='law == "' + v["law"] + '"', output_fields=["count(*)"])[0]["count(*)"]) for v in config.SOURCES.values())
     except Exception:
         pass
-    return {"articles": a, "concepts": c, "cases": ca, "sources": srcs,
+    return {"articles": a, "concepts": n_concepts, "cases": ca, "sources": srcs,
             "milvus_rows": rows, "laws": list(config.SOURCES.keys())}
 @app.get("/api/page")
 def page(path: str = Query(...)):
