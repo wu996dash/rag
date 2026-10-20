@@ -97,3 +97,9 @@ SOURCES = {
         "status": "现行有效",
     },
 }
+# MySQL（用户/令牌/会话存储，D16）
+MYSQL_HOST = env("MYSQL_HOST", "127.0.0.1")
+MYSQL_PORT = int(env("MYSQL_PORT", "3306"))
+MYSQL_USER = env("MYSQL_USER", "root")
+MYSQL_PASSWORD = env("MYSQL_PASSWORD", "")
+MYSQL_DB = env("MYSQL_DB", "viki_rag")
