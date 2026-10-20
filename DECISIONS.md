@@ -62,3 +62,9 @@
 - 定案：评测引擎 ThreadPool 并行（workers=3，GPU 前向加锁串行）+ 进程内模型预热 + 429 指数退避（retries=5）+ 失败题二轮重排队 + `--only` 增量过滤。全量 65 题 957s → 324s（2.9x）。
 - 教训：判官模型曾尝试降级 qwen-turbo（快 3-5x），实测该账号 turbo 独立限速直接 429，判官保持 qwen-plus，模型名走 LLM_MODEL_JUDGE 可配置。
 - 附带修复：REF 校验支持法律全称→简称映射（修 J-004 假阴性）。
+
+
+## D13 服务化架构（M8，2026-10-20）—— FastAPI + Vue3 + WebSocket 单端口
+
+- **定案**：后端 FastAPI（uvicorn），`/ws/ask` 事件协议（stage/token/verify/final/done），同步 GPU/推理生成器经 queue+asyncio.to_thread 桥接到异步 WS；前端 Vue3+Vite+marked，构建产物由 FastAPI StaticFiles 同端口托管（开发期 vite proxy）。默认端口 8100（本机 8000 已被其他程序占用，不动它）。
+- 理由：qa_graph 本地部分 GPU 化后 <2.5s，体感延迟集中在 LLM 生成——流式事件协议把阶段耗时与 token 全部前置可见，引用校验结果做成可点击原文核对，是法律场景信任建设的一部分。

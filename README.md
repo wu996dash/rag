@@ -47,3 +47,14 @@ sources/官方docx ─ingest_graph→ wiki条文页+制度页+index ─双通道
 
 - **GPU 已启用（2026-10-20）**：torch cu132 + RTX 4060，rerank 0.2s/题、双模显存 4.5GB
 - chat 常驻会话热态单题 ~10s（大头变为 qwen-plus 生成 8-12s，流式首字 ~2s）；冷启动一次 ~25s
+
+
+## Web 界面（M8，FastAPI + Vue + WebSocket）
+
+```powershell
+serve.cmd            # 或 .venv\Scripts\python.exe -m uvicorn app.api:app --port 8100
+# 浏览器打开 http://127.0.0.1:8100
+```
+- 流式问答：改写/导航/召回/重排各阶段耗时实时可见，答案逐 token 输出，引用校验结果（OK/未通过/剔除）以标签呈现，点击即开对应条文页原文
+- 接口：`WS /ws/ask`（事件协议 stage|token|final|verify|done|error）、`GET /api/stats`、`GET /api/page?path=wiki/...md`
+- 前端开发模式：`cd web && npm run dev`（vite 代理到 8100）；生产构建 `npm run build` 后由 FastAPI 静态托管，单端口部署
