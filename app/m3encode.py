@@ -4,6 +4,8 @@
 import zlib
 from functools import lru_cache
 from . import config
+import threading
+_GPU_LOCK = threading.Lock()
 SPECIAL = {"[CLS]", "[SEP]", "</s>", "<pad>", "[PAD]", "[MASK]", "[UNK]"}
 @lru_cache(maxsize=1)
 def _load():
@@ -36,7 +38,7 @@ def _merge_weights(ids, toks, scores):
 def _encode_once(texts):
     tok, model, sl, dev, torch = _load()
     dense_all, sparse_all = [], []
-    with torch.no_grad():
+    with _GPU_LOCK, torch.no_grad():
         for t in texts:
             enc = tok([t], truncation=True, max_length=1024, return_tensors="pt").to(dev)
             hs = model(**enc).last_hidden_state

@@ -81,6 +81,8 @@ def _reranker():
     model = AutoModelForSequenceClassification.from_pretrained(config.RERANKER_PATH).to(dev)
     model.eval()
     return tok, model, dev
+import threading
+_RR_LOCK = threading.Lock()
 def rerank(question, hits, top=5):
     import torch
     tok, model, dev = _reranker()
@@ -89,7 +91,7 @@ def rerank(question, hits, top=5):
         return e["text"]
     docs = [_txt(h)[:400] for h in hits]
     scores = []
-    with torch.no_grad():
+    with _RR_LOCK, torch.no_grad():
         for i in range(0, len(docs), 4):
             b = tok([(question, d) for d in docs[i:i + 4]], truncation=True,
                     max_length=1024, padding=True, return_tensors="pt").to(dev)

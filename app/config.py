@@ -12,6 +12,7 @@ def env(name, default=None):
     return v if v else default
 LLM_BASE_URL = env("LLM_BASE_URL", "https://dashscope.aliyuncs.com/compatible-mode/v1")
 LLM_MODEL = env("LLM_MODEL", "qwen-plus")
+LLM_MODEL_JUDGE = env("LLM_MODEL_JUDGE", "qwen-plus")  # turbo 在本账号配额独立限速(实测429)，判官保持 plus；如需换模型走 LLM_MODEL_JUDGE
 LLM_API_KEY = env("LLM_API_KEY") or env("DASHSCOPE_API_KEY")  # 回落规则（红线：不落文件）
 MILVUS_URI = env("MILVUS_URI", "http://127.0.0.1:19531")
 EMBED_DEVICE = env("EMBED_DEVICE", "cpu")

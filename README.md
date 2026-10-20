@@ -29,7 +29,8 @@ uv pip install --python .venv pymilvus langgraph python-dotenv pyyaml
 python -m app.cli ask "对方答应还钱后诉讼时效怎么算？"   # 问答（流式输出+引用核对）
 python -m app.cli chat                                  # 常驻会话（推荐演示用，模型只加载一次）
 python -m app.cli eval                                   # 检索侧命中率
-python -m app.eval_full                                  # 全量四维评测
+python -m app.eval_full                                  # 全量四维评测（65题约6分钟，3并发）
+python -m app.eval_full --only 时效,J --workers 3        # 增量评测：按题目id/文件名过滤
 python -m app.cli ingest --lo 1 --hi 204                 # 增量入库（幂等）
 ```
 

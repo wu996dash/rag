@@ -24,8 +24,12 @@ def verify(answer, reranked, articles_dir, nav_pages=None):
     nav_body = "\n".join(p.get("body", "") for p in (nav_pages or []))
     joined = _norm("\n".join(r["text"] for r in reranked) + nav_body)
     report = {"refs_ok": [], "refs_bad": [], "quotes_dropped": 0}
+    from . import config as _cfg
+    name_map = {v["law"]: v["abbr"] for v in _cfg.SOURCES.values()}
+    name_map.update({v["abbr"]: v["abbr"] for v in _cfg.SOURCES.values()})
     for law_abbr, n in refs:
         law_abbr = law_abbr.strip().replace("中华人民共和国", "")
+        law_abbr = name_map.get(law_abbr) or name_map.get(f"中华人民共和国{law_abbr}") or law_abbr
         fname = f"{law_abbr}第{n}条.md"
         in_pool = any(r["article_no"] == n for r in reranked) or (fname in nav_body) or (f"民法典第{n}条.md" in nav_body)
         has_file = (articles_dir / fname).exists()

@@ -1,0 +1,56 @@
+
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 391/391 [00:00<00:00, 23865.95it/s]
+
+Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]
+Loading weights:   7%|▋         | 26/393 [00:00<00:01, 238.60it/s]
+Loading weights:  23%|██▎       | 90/393 [00:00<00:00, 381.45it/s]
+Loading weights:  32%|███▏      | 127/393 [00:00<00:00, 344.51it/s]
+Loading weights:  41%|████      | 161/393 [00:00<00:00, 293.43it/s]
+Loading weights:  49%|████▊     | 191/393 [00:00<00:01, 187.41it/s]
+Loading weights:  54%|█████▍    | 214/393 [00:00<00:00, 181.49it/s]
+Loading weights:  60%|█████▉    | 235/393 [00:01<00:00, 184.45it/s]
+Loading weights: 100%|██████████| 393/393 [00:01<00:00, 353.03it/s]
+[1/65] G-044 correct=1 refusal=1 cited=3 ok=3 repealed=0 drop=0
+[2/65] G-001 correct=1 refusal=0 cited=5 ok=5 repealed=0 drop=0
+[3/65] G-002 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[4/65] G-003 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[5/65] G-004 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[6/65] G-005 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[7/65] G-006 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[8/65] G-007 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[9/65] G-008 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[10/65] G-009 correct=1 refusal=0 cited=5 ok=5 repealed=0 drop=0
+[11/65] G-010 correct=0 refusal=1 cited=0 ok=0 repealed=0 drop=1
+[12/65] G-011 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[13/65] G-012 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[14/65] G-013 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[15/65] G-014 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[16/65] G-015 correct=1 refusal=1 cited=1 ok=1 repealed=0 drop=0
+[17/65] G-016 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[18/65] G-017 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[19/65] G-018 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[20/65] G-019 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[21/65] G-020 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[22/65] G-021 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[23/65] G-022 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[24/65] G-023 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[25/65] G-024 correct=1 refusal=1 cited=3 ok=3 repealed=0 drop=0
+[26/65] G-025 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[27/65] G-026 correct=1 refusal=0 cited=5 ok=5 repealed=0 drop=0
+[28/65] G-027 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[29/65] G-028 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[30/65] G-029 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[31/65] G-030 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[32/65] G-031 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[33/65] G-032 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[34/65] G-033 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[35/65] G-034 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[36/65] G-035 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[37/65] G-036 correct=1 refusal=1 cited=2 ok=2 repealed=0 drop=0
+[38/65] G-037 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[39/65] G-038 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[40/65] G-039 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[41/65] G-040 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[42/65] G-041 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[43/65] G-042 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
