@@ -44,5 +44,5 @@ sources/官方docx ─ingest_graph→ wiki条文页+制度页+index ─双通道
 > 本内容仅供参考，不构成正式法律意见；重大事项请咨询执业律师。
 ## 性能（2026-10-20 P0 后实测）
 
-- 冷启动单题 ~40s（模型加载 ~20s + 推理/生成）；**chat 常驻会话热态单题 ~12-18s**（流式首字 ~2s）
-- 瓶颈已收敛到 bge-reranker CPU 推理（~5-7s/题）与 qwen-plus 生成（~8-12s）；GPU 安装见 DECISIONS D10，装后 rerank 进入亚秒级
+- **GPU 已启用（2026-10-20）**：torch cu132 + RTX 4060，rerank 0.2s/题、双模显存 4.5GB
+- chat 常驻会话热态单题 ~10s（大头变为 qwen-plus 生成 8-12s，流式首字 ~2s）；冷启动一次 ~25s

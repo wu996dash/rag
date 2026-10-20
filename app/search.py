@@ -72,13 +72,14 @@ def vector_recall(question, k=12, include_abolished=False):
 def _reranker():
     import torch
     from transformers import AutoModelForSequenceClassification, AutoTokenizer
+    dev = getattr(config, "EMBED_DEVICE", "cpu")
     tok = AutoTokenizer.from_pretrained(config.RERANKER_PATH)
-    model = AutoModelForSequenceClassification.from_pretrained(config.RERANKER_PATH)
+    model = AutoModelForSequenceClassification.from_pretrained(config.RERANKER_PATH).to(dev)
     model.eval()
-    return tok, model
+    return tok, model, dev
 def rerank(question, hits, top=5):
     import torch
-    tok, model = _reranker()
+    tok, model, dev = _reranker()
     def _txt(h):
         e = h.get("entity", h)
         return e["text"]
@@ -87,7 +88,7 @@ def rerank(question, hits, top=5):
     with torch.no_grad():
         for i in range(0, len(docs), 4):
             b = tok([(question, d) for d in docs[i:i + 4]], truncation=True,
-                    max_length=1024, padding=True, return_tensors="pt")
+                    max_length=1024, padding=True, return_tensors="pt").to(dev)
             lg = model(**b).logits.squeeze(-1)
             if lg.dim() == 0:
                 lg = lg.unsqueeze(0)

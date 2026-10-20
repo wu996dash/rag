@@ -14,6 +14,7 @@ def _load():
     model = AutoModel.from_pretrained(config.EMBED_MODEL_PATH)
     sl = torch.nn.Linear(model.config.hidden_size, 1)
     sl.load_state_dict(torch.load(f"{config.EMBED_MODEL_PATH}/sparse_linear.pt", map_location="cpu"))
+    model.to(dev); sl.to(dev)
     model.eval(); sl.eval()
     return tok, model, sl, dev, torch
 def _merge_weights(ids, toks, scores):

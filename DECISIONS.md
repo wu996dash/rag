@@ -50,7 +50,7 @@
 
 ## D10 待办确认
 
-- GPU 版 torch 未装成（download.pytorch.org 本机 DNS 不通）；CPU 推理可用（改写后单题 ~30-60s），M5+ 可从 PyPI 主站或镜像尝试。
+- ~~GPU 版 torch 未装成~~ **已解决（2026-10-20）**：本机原装有 CUDA 13.3 工具包（nvcc 可用，驱动 610.47）；经 reg-rag 项目的官方索引 download.pytorch.org/whl/cu132 + 其 .uv-cache 缓存复用，13 秒装上 torch 2.14.1+cu132。GPU 实测：rerank 12 对 0.20s（CPU 5-7s）、两模同驻显存 4.55GB、embed 缓存命中 0ms。附带修复：numpy 钉 <2（共享 base 的 scipy/sklearn）、嵌入与重排权重显式 .to(device)。
 ## D11 P0 性能包（2026-10-20）—— 不改质量口径的延迟治理
 
 - **定案**：① 查询嵌入进程内缓存（profile 实测 vector_search 0.0s，同一文本三次前向变一次）；② 重排文档截断 800→400 字（rerank 20-40s→~5s，法条长度所受影响为零）；③ ask/chat 流式输出（首 token ~2s，体感大幅改善）；④ 常驻 chat 会话消除每问 ~20s 模型冷加载；⑤ ask --profile 节点级计时进入 CLI。

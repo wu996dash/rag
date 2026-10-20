@@ -4,4 +4,8 @@ pymilvus>=3.0
 langgraph>=1.0
 python-dotenv
 pyyaml
-# GPU 加速升级路径（M4 前建议）：uv pip install torch --index-url https://download.pytorch.org/whl/cu124 后 .env 改 EMBED_DEVICE=cuda
+# GPU（2026-10-20 已启用）：torch==2.14.1+cu132，官方索引 download.pytorch.org/whl/cu132；
+#   本机已有 wheel 缓存可复用：uv pip install --python .venv --reinstall torch==2.14.1+cu132 ^
+#     --index-url https://download.pytorch.org/whl/cu132 --cache-dir C:\Users\吴贵\Desktop\work_space\DSH\reg-rag\.uv-cache
+# 关键约束：numpy<2（与 anaconda base 的 scipy/sklearn 二进制兼容，system-site-packages 共享环境必须钉）
+numpy<2
