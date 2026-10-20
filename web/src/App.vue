@@ -19,6 +19,19 @@
             {{ r.name }}{{ r.drop ? '（已剔除）' : '' }}
           </span>
         </div>
+        <div class="vote" v-if="m.q && m.done">
+          <template v-if="!m.vote">这条回答有帮助吗？
+            <span class="vbtn" @click="cast(m,'up')">👍 有用</span>
+            <span class="vbtn" @click="cast(m,'down')">👎 有问题</span>
+          </template>
+          <template v-else-if="m.vote==='up'">已记录，谢谢 👍</template>
+          <template v-else-if="m.showNote">
+            <input class="note-in" v-model="m.note" placeholder="哪里不对？（选填，将进入人工复核）" @keyup.enter="cast(m,'down',true)"/>
+            <span class="vbtn" @click="cast(m,'down',true)">提交复核</span>
+            <span class="vbtn dim" @click="m.vote='down';post(m,'')">跳过</span>
+          </template>
+          <template v-else>已记录 👎，会进入人工复核队列</template>
+        </div>
       </template>
     </div>
   </main>
@@ -50,7 +63,7 @@ function send() {
   const q = input.value.trim()
   if (!q || busy.value || !ws || ws.readyState !== 1) return
   messages.value.push({ role: 'user', text: q })
-  messages.value.push({ role: 'bot', text: '', stages: [], refs: [], notice: '' })
+  messages.value.push({ role: 'bot', text: '', stages: [], refs: [], notice: '', q, done: false, vote: '', showNote: false, note: '' })
   // 必须取数组内的响应式代理对象——直接改 push 前的原始对象不会触发渲染
   const bot = messages.value[messages.value.length - 1]
   input.value = ''; busy.value = true; scroll()
@@ -82,6 +95,15 @@ function send() {
   ws.addEventListener('message', onMsg)
   ws.addEventListener('message', function once(e) { const d = JSON.parse(e.data); if (d.type === 'done' || d.type === 'error') { ws.removeEventListener('message', onMsg); ws.removeEventListener('message', once) } })
   ws.send(JSON.stringify({ text: q }))
+}
+function post(m, verdict, note) {
+  fetch('/api/feedback', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ question: m.q, answer: m.text, verdict, note: note || m.note || '' }) }).catch(() => {})
+}
+function cast(m, v, withNote) {
+  if (v === 'down' && !withNote && !m.vote) { m.showNote = true; return }
+  m.vote = v; m.showNote = false
+  post(m, v, v === 'down' ? (m.note || '') : '')
 }
 async function openPage(name) {
   const path = 'wiki/articles/' + name + '.md'

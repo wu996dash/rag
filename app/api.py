@@ -39,6 +39,22 @@ def page(path: str = Query(...)):
     if not p.exists():
         return JSONResponse({"error": "不存在"}, status_code=404)
     return {"path": rel, "content": p.read_text(encoding="utf-8")}
+@app.post("/api/feedback")
+async def feedback(payload: dict):
+    import json, time, re
+    q = str(payload.get("question") or "").strip()
+    v = payload.get("verdict")
+    if not q or v not in ("up", "down"):
+        return JSONResponse({"error": "参数不合法"}, status_code=400)
+    note = str(payload.get("note") or "")[:500]
+    ans = str(payload.get("answer") or "")[:3000]
+    ans = re.sub(r"\s+", " ", ans).strip()
+    rec = {"ts": time.strftime("%Y-%m-%d %H:%M"), "question": q[:200], "verdict": v,
+           "note": note, "answer": ans, "reviewed": False}
+    with open(config.REPO / "eval" / "feedback.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    return {"ok": True}
+
 @app.websocket("/ws/ask")
 async def ws_ask(ws: WebSocket):
     await ws.accept()

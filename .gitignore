@@ -26,3 +26,5 @@ desktop.ini
 # web 前端
 web/node_modules/
 web/dist/
+
+eval/feedback.jsonl

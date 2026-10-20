@@ -40,6 +40,7 @@ def main():
     p.add_argument("--no-stream", action="store_true")
     p = sub.add_parser("chat"); p.add_argument("--profile", action="store_true")
     sub.add_parser("eval")
+    p = sub.add_parser("feedback"); p.add_argument("--draft", action="store_true"); p.add_argument("--mark", action="store_true")
     a = ap.parse_args()
     if a.cmd == "ping":
         from .vectors import client
@@ -72,6 +73,17 @@ def main():
     elif a.cmd == "eval":
         from .eval_runner import run_retrieval_eval
         sys.exit(run_retrieval_eval())
+    elif a.cmd == "feedback":
+        from . import feedback
+        if a.mark:
+            print("已标记复核，累计:", feedback.mark_reviewed())
+        elif a.draft:
+            print(feedback.draft())
+        else:
+            rows = feedback.pending()
+            print(f"待处理 👎 {len(rows)} 条")
+            for r in rows[:20]:
+                print(f"  [{r['ts']}] {r['question'][:40]} | 备注: {r.get('note') or '无'}")
     elif a.cmd == "concepts":
         from .concepts import generate_all
         generate_all(limit=a.limit)
