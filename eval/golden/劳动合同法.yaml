@@ -1,0 +1,71 @@
+# M7 劳动法域评测题（L-001 由 NB-001 转标）
+- id: L-001
+  question: 公司无理由辞退员工要赔多少钱
+  type: answerable
+  expected_articles: [劳动合同法第47条, 劳动合同法第87条]
+  key_points: [经济补偿按工作年限每满一年一个月工资, 违法解除按经济补偿标准二倍支付赔偿金]
+- id: L-002
+  question: 三年期的合同试用期最长能约定多久
+  type: answerable
+  expected_articles: [劳动合同法第19条]
+  key_points: [三年以上固定期限试用期不得超过六个月]
+- id: L-003
+  question: 试用期内公司能说辞退就辞退吗
+  type: answerable
+  expected_articles: [劳动合同法第21条, 劳动合同法第39条]
+  key_points: [试用期内解除限于法定情形, 说明理由, 不符合录用条件]
+- id: L-004
+  question: 竞业限制协议最长期限是多久
+  type: answerable
+  expected_articles: [劳动合同法第24条]
+  key_points: [不得超过二年]
+- id: L-005
+  question: 公司出钱培训定了服务期，提前离职违约金有上限吗
+  type: answerable
+  expected_articles: [劳动合同法第22条]
+  key_points: [违约金不得超过培训费用, 不得超过履行服务期所应分摊的费用]
+- id: L-006
+  question: 经济补偿的N是怎么算的，高薪员工有封顶吗
+  type: answerable
+  expected_articles: [劳动合同法第47条]
+  key_points: [每满一年一个月工资, 六个月以上不满一年按一年, 不满六个月支付半个月, 月工资超三倍职工平均工资的按三倍且最高不超过十二年]
+- id: L-007
+  question: 入职超过一个月没签书面合同有什么后果
+  type: answerable
+  expected_articles: [劳动合同法第82条]
+  key_points: [每月支付二倍工资]
+- id: L-008
+  question: 连续工作满十年能要求签无固定期限合同吗
+  type: answerable
+  expected_articles: [劳动合同法第14条]
+  key_points: [劳动者提出或者同意续订订立劳动合同的除本人提出订立固定期限外应当订立无固定期限劳动合同, 连续工作满十年]
+- id: L-009
+  question: 公司裁员二十人以上要走什么程序
+  type: answerable
+  expected_articles: [劳动合同法第41条]
+  key_points: [提前三十日向工会或者全体职工说明情况, 听取意见, 裁减人员方案向劳动行政部门报告]
+- id: L-010
+  question: 员工自己不想干了，公司还要给补偿吗
+  type: answerable
+  expected_articles: [劳动合同法第46条, 劳动合同法第38条]
+  key_points: [劳动者依照三十八条被迫解除的用人单位应当支付经济补偿, 劳动者主动无因辞职不属于四十六应支付情形]
+- id: L-011
+  question: 单位拖欠工资不缴社保，员工能立即走人并要补偿吗
+  type: answerable
+  expected_articles: [劳动合同法第38条]
+  key_points: [未及时足额支付劳动报酬, 未依法缴纳社会保险费, 劳动者可以解除劳动合同并获经济补偿]
+- id: L-012
+  question: 没有合法理由辞退，员工不想拿赔偿想继续上班可以吗
+  type: answerable
+  expected_articles: [劳动合同法第48条]
+  key_points: [劳动者要求继续履行劳动合同的用人单位应当继续履行]
+- id: L-013
+  question: 合同到期不续签要付经济补偿吗
+  type: answerable
+  expected_articles: [劳动合同法第46条, 劳动合同法第44条]
+  key_points: [固定期限劳动合同期满终止除用人单位维持或者提高条件续订劳动者不同意外用人单位应当支付经济补偿]
+- id: L-014
+  question: 竞业限制协议里没写补偿，还有效吗，补偿怎么给
+  type: answerable
+  expected_articles: [劳动合同法第23条]
+  key_points: [竞业限制期限内按月给予劳动者经济补偿]

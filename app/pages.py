@@ -26,7 +26,7 @@ def render(name: str, lo: int, hi: int):
         body = f'''---
 id: article/{meta["slug"]}-{r["no"]}
 type: article
-title: {meta["abbr"]}第{r["no"]}条（{r["part"]} {r["chapter"]})
+title: {meta["abbr"]}第{r["no"]}条（{" ".join(x for x in (r["part"], r["chapter"]) if x)}）
 law: {meta["law"]}
 article_no: "{r["no"]}"
 effective_date: {meta["effective"]}

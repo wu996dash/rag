@@ -31,6 +31,17 @@ SOURCES = {
         "status": "现行有效",
         "total_articles": 1260,
     },
+    "劳动合同法": {
+        "path": "sources/中华人民共和国劳动合同法_20121228.docx",
+        "law": "中华人民共和国劳动合同法",
+        "abbr": "劳动合同法",
+        "slug": "laodong-hetongfa",
+        "id_base": 3000000,
+        "passed": "2007-06-29",
+        "effective": "2008-01-01",
+        "revised": "2012-12-28",
+        "status": "现行有效",
+    },
     "诉讼时效规定": {
         "path": "sources/诉讼时效规定_20201223.md",
         "law": "最高人民法院关于审理民事案件适用诉讼时效制度若干问题的规定",

@@ -1,7 +1,4 @@
 # 无据问题：语料（民法典总则编+已入库未编译法律）中没有可支撑条文，正确答案是声明依据不足
-- id: NB-001
-  question: 公司无理由辞退员工要赔多少钱
-  type: no_basis
 - id: NB-002
   question: 醉酒驾驶机动车会判什么罪
   type: no_basis

@@ -57,14 +57,21 @@ FEWSHOT = """## 一句话规则
 ## 关联制度
 [诉讼时效中止](诉讼时效中止.md)｜[诉讼时效](诉讼时效.md)"""
 def _norm(s): return "".join(s.split())
+def _abbr_of(topic):
+    from . import config
+    return config.SOURCES[topic.get("law", "民法典")]["abbr"]
 def _arts(topic):
-    rs = [r for r in parse_law("民法典") if topic["lo"] <= r["no"] <= topic["hi"]]
+    rs = [r for r in parse_law(topic.get("law", "民法典")) if topic["lo"] <= r["no"] <= topic["hi"]]
     return rs
 def _build_user(topic):
     rs = _arts(topic)
     txt = "\n\n".join(f"【第{r['no']}条】\n{r['text']}" for r in rs)
-    return (f"主题制度：《{topic['title']}》（民法典总则编，第{topic['lo']}—{topic['hi']}条）\n\n"
-            f"参照样板页正文（学结构与纪律，不要抄内容）：\n{FEWSHOT}\n\n"
+    from . import config as _c
+    m = _c.SOURCES[topic.get("law", "民法典")]
+    return (f"主题制度：《{topic['title']}》（{m['law']} 第{topic['lo']}—{topic['hi']}条）\n\n"
+            f"【当前法律】本题唯一可引用/可链接的法律是《{m['law']}》，简称{m['abbr']}；"
+            f"一切引用与链接必须写成 ../articles/{m['abbr']}第N条.md，出现其他法名（如民法典）一律判违规。\n\n"
+            f"参照样板页正文（学结构与纪律，不要抄内容与其法名）：\n{FEWSHOT}\n\n"
             f"给定条文（唯一可引用来源）：\n{txt}")
 def _sanitize(body):
     """链接目标不存在 -> 降级为纯文本（SCHEMA §4.3 的机器执行：不得凭空新增页面）。"""
@@ -76,15 +83,20 @@ def _sanitize(body):
         return f"{label}（制度页未建，已登记待入库）"
     return re.sub(r"\[([^\]]+)\]\((?!https?:)([^)]+?\.md)\)", repl, body)
 def _validate(body, topic):
-    allow = {r["no"] for r in _arts(topic)}
+    arts = _arts(topic)
+    allow = {r["no"] for r in arts}
+    allow_stems = {f'{topic.get("law", "民法典")[:3]}第{r["no"]}条'.replace("中华人民共和", "") for r in arts}
+    import re as _r2
+    abbr = _abbr_of(topic)
+    allow_stems = {f'{abbr}第{r["no"]}条' for r in arts}
     src = _norm("\n".join(r["text"] for r in _arts(topic)))
     for q in re.findall(r"^> 【原文】 (.+)$", body, re.M):
         segs = [s for s in _norm(q).split("……") if s]
         if not all(s in src for s in segs):
             return f"引用与条文不符: {q[:30]}"
-    for n in map(int, re.findall(r"民法典第(\d+)条\.md", body)):
-        if n not in allow:
-            return f"越权链接条文: 第{n}条"
+    for stem in re.findall(r"\]\(\.\./articles/([^)]+?)\.md\)", body):
+        if stem not in allow_stems:
+            return f"越权链接条文: {stem}"
     if "## 核心依据" not in body:
         return "缺 核心依据 节"
     return None
@@ -101,12 +113,12 @@ def generate_one(topic):
             err = _validate(body, topic)
             if err is None:
                 fm = (f"---\nid: concept/{topic['slug']}\ntype: concept\ntitle: {title}\n"
-                      f"status: 现行有效\nsources:\n  - {config.SOURCES['民法典']['path']}\n"
+                      f"status: 现行有效\nsources:\n  - {config.SOURCES[topic.get('law', '民法典')]['path']}\n"
                       f"updated_at: {date.today().isoformat()}\n---\n\n")
                 path.write_text(fm + body + "\n", encoding="utf-8")
                 return (title, "ok")
             msgs.append({"role": "assistant", "content": body})
-            msgs.append({"role": "user", "content": f"校验失败：{err}。只修正该问题后重新输出正文。"})
+            msgs.append({"role": "user", "content": f"校验失败：{err}。只修正该问题后重新输出正文；注意链接与REF中的法名必须用当前法律简称。"})
         except Exception as e:
             return (title, f"error {e!r:.60}")
     return (title, "rejected(校验两次失败)")
