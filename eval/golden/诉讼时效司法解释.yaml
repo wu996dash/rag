@@ -1,0 +1,31 @@
+# 司法解释入库新增评测题（M6，2026-10-20）
+- id: J-001
+  question: 欠银行的存款本金利息过了很久才主张，银行能拿诉讼时效拒绝吗
+  type: answerable
+  expected_articles: [诉讼时效规定第1条]
+  key_points: [支付存款本金及利息请求权, 提出诉讼时效抗辩人民法院不予支持]
+- id: J-002
+  question: 一审没提诉讼时效抗辩，二审才想到，法院会支持吗
+  type: answerable
+  expected_articles: [诉讼时效规定第3条]
+  key_points: [二审期间提出人民法院不予支持, 基于新的证据能够证明已过诉讼时效的除外]
+- id: J-003
+  question: 申请支付令能中断诉讼时效吗
+  type: answerable
+  expected_articles: [诉讼时效规定第11条]
+  key_points: [申请支付令, 与提起诉讼具有同等诉讼时效中断的效力]
+- id: J-004
+  question: 合同被撤销后，要求返还财产的时效从哪天开始算
+  type: answerable
+  expected_articles: [诉讼时效规定第5条]
+  key_points: [从合同被撤销之日起计算]
+- id: J-005
+  question: 不当得利的返还请求权诉讼时效怎么起算
+  type: answerable
+  expected_articles: [诉讼时效规定第6条]
+  key_points: [知道或者应当知道不当得利事实及对方当事人]
+- id: J-006
+  question: 帮人管理事务产生的必要费用，追偿时效从什么时候算
+  type: answerable
+  expected_articles: [诉讼时效规定第7条]
+  key_points: [无因管理行为结束并且管理人知道或者应当知道本人之日起]

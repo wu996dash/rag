@@ -30,4 +30,13 @@ SOURCES = {
         "status": "现行有效",
         "total_articles": 1260,
     },
+    "诉讼时效规定": {
+        "path": "sources/诉讼时效规定_20201223.md",
+        "law": "最高人民法院关于审理民事案件适用诉讼时效制度若干问题的规定",
+        "abbr": "诉讼时效规定",
+        "slug": "susong-shixiao-guiding",
+        "id_base": 2000000,
+        "effective": "2020-12-23",
+        "status": "现行有效",
+    },
 }

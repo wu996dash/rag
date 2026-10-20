@@ -48,8 +48,12 @@ def nav_select(question, topk=3):
                     picked.append(d); names.add(d["name"])
     return picked
 
-def _wiki_status(article_no: str):
-    fp = config.REPO / "wiki" / "articles" / f"民法典第{article_no}条.md"
+_ABBR = {v["law"]: v["abbr"] for v in config.SOURCES.values()}
+def _wiki_status(law: str, article_no: str):
+    abbr = _ABBR.get(law)
+    if not abbr:
+        return None
+    fp = config.REPO / "wiki" / "articles" / f"{abbr}第{article_no}条.md"
     if not fp.exists():
         return None
     m = re.search(r"^status:\s*(\S+)\s*$", fp.read_text(encoding="utf-8"), re.M)
@@ -64,7 +68,7 @@ def vector_recall(question, k=12, include_abolished=False):
     # 时效权威在 wiki frontmatter（Milvus 标量仅作冗余快照）：默认只回现行有效
     out = []
     for h in hits:
-        stt = _wiki_status(h["article_no"])
+        stt = _wiki_status(h.get("law", ""), h["article_no"])
         if stt in (None, "现行有效"):
             out.append(h)
     return out
