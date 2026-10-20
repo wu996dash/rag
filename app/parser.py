@@ -24,6 +24,9 @@ def parse_law(name: str):
     recs, cur = [], None
     part = chap = sec = ""
     for p in text.split("\n"):
+        p = p.strip("　 \t")
+        if not p:
+            continue
         mh = HEAD_RE.match(p)
         ma = ART_RE.match(p)
         if mh and not ma:

@@ -5,7 +5,4 @@
 - id: NB-006
   question: 民间借贷利率的司法保护上限是多少
   type: no_basis
-- id: NB-008
-  question: 工伤一次性伤残补助金标准是什么
-  type: no_basis
-# NB-003/004/005/007/009 于全书条文铺满后转正，见 民法典各编.yaml
+# NB-008 已于 M7b 转正为 C-006（工伤保险条例）

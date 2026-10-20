@@ -1,0 +1,46 @@
+# M7b 劳动法配套法域题目（2026-10-20，C-006 由 NB-008 转正）
+- id: LD-001
+  question: 工作日加班、休息日加班、法定假日加班的加班费分别怎么算
+  type: answerable
+  expected_articles: [劳动法第44条]
+  key_points: [百分之一百五十, 百分之二百, 百分之三百]
+- id: LD-002
+  question: 国家实行带薪年休假有法律依据吗
+  type: answerable
+  expected_articles: [劳动法第45条]
+  key_points: [连续工作一年以上, 享受带薪年休假]
+- id: LD-003
+  question: 劳动仲裁的时效是一年还是两年，从什么时候起算
+  type: answerable
+  expected_articles: [调解仲裁法第27条]
+  key_points: [一年, 知道或者应当知道其权利被侵害之日]
+- id: LD-004
+  question: 追讨工资的仲裁申请受一年时效限制吗
+  type: answerable
+  expected_articles: [调解仲裁法第27条]
+  key_points: [拖欠劳动报酬争议, 劳动关系存续期间提出仲裁不受一年时效限制]
+- id: LD-005
+  question: 哪些劳动争议案件仲裁是一裁终局
+  type: answerable
+  expected_articles: [调解仲裁法第47条]
+  key_points: [追索劳动报酬不超过当地月最低工资标准十二个月金额, 执行国家劳动标准的争议]
+- id: LD-006
+  question: 上下班顺路买菜被车撞了算工伤吗
+  type: answerable
+  expected_articles: [工伤保险条例第14条]
+  key_points: [合理时间, 合理路线, 非本人主要责任的交通事故应认定为工伤]
+- id: LD-007
+  question: 竞业限制协议没约定补偿，我履行了能要钱吗，标准是多少
+  type: answerable
+  expected_articles: [劳动争议解释一第36条]
+  key_points: [月平均工资的百分之三十, 不低于最低工资标准, 按月支付]
+- id: LD-008
+  question: 公司三个月没发竞业限制补偿，我还需要遵守协议吗
+  type: answerable
+  expected_articles: [劳动争议解释一第38条]
+  key_points: [三个月未支付经济补偿, 劳动者请求解除竞业限制约定人民法院应予支持]
+- id: C-006
+  question: 七级伤残能拿到哪些一次性补助
+  type: answerable
+  expected_articles: [工伤保险条例第37条]
+  key_points: [一次性伤残补助金, 解除或终止劳动合同时一次性工伤医疗补助金和伤残就业补助金]

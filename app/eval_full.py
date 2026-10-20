@@ -3,7 +3,7 @@ import argparse, json, re, time, glob, threading
 from concurrent.futures import ThreadPoolExecutor
 from . import config
 JUDGE_SYS = ("你是严格的法律 RAG 评测员。根据题目、系统回答、评分要点与给定条文，只输出 JSON："
- '{"kp":[每个要点1或0],"support":{"条文号":1或0——该条能否支撑回答中对它的引用主张},'
+ '{"kp":[每个要点1或0],"support":{"条文号":1或0——凡回答中明确归于该条文的主张，条文内容包含或合理蕴含该主张即判1（不要求该条文独立支撑整题核心结论）},'
  '"repealed":0或1——回答是否把已废止规则当作现行依据（正确指出已废止则记0）,'
  '"refusal":0或1——回答是否为依据不足类拒答,'
  '"mustnot":[被违反的禁用概念——仅当该概念作为法律规则被错误主张时才算，日常语词巧合（如交通中断）不算]}。'
@@ -13,7 +13,7 @@ JUDGE_SYS = ("你是严格的法律 RAG 评测员。根据题目、系统回答�
 _print_lock = threading.Lock()
 def judge(item, answer, top):
     from .llm import chat
-    arts = "\n".join(f"{r.get('law','')[-6:]}第{r['article_no']}条: " + r["text"][:150].replace("\n", " ") for r in top)
+    arts = "\n".join(f"{r.get('law','')[-6:]}第{r['article_no']}条: " + r["text"][:650].replace("\n", " ") for r in top)
     user = (f"题目：{item['question']}\n评分要点：{item.get('key_points', [])}\n系统回答：\n{answer}\n给定条文：\n{arts}\n"
             "注意：type=no_basis 的题目，正确行为是明确声明依据不足（refusal=1）。")
     out = chat([{"role": "system", "content": JUDGE_SYS}, {"role": "user", "content": user}],

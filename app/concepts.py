@@ -61,12 +61,23 @@ def _abbr_of(topic):
     from . import config
     return config.SOURCES[topic.get("law", "民法典")]["abbr"]
 def _arts(topic):
+    if "ranges" in topic:
+        out = []
+        for ln, lo, hi in topic["ranges"]:
+            out += [r for r in parse_law(ln) if lo <= r["no"] <= hi]
+        return out
     rs = [r for r in parse_law(topic.get("law", "民法典")) if topic["lo"] <= r["no"] <= topic["hi"]]
     return rs
 def _build_user(topic):
     rs = _arts(topic)
     txt = "\n\n".join(f"【第{r['no']}条】\n{r['text']}" for r in rs)
     from . import config as _c
+    if "ranges" in topic:
+        laws = [ln for ln, _, _ in topic["ranges"]]
+        ms = [_c.SOURCES[ln] for ln in laws]
+        intro = f"主题制度：《{topic['title']}》（涉及 {'、'.join(m['law'] for m in ms)}）\n\n【当前法律】本题可引用 {len(ms)} 部法律：{'、'.join(m['abbr'] for m in ms)}；"
+        rules = f"链接格式 ../articles/<法名简称>第N条.md，禁止出现这之外的法名。\n\n"
+        return (intro + rules + f"参照样板页正文（学结构与纪律，不要抄内容与其法名）：\n{FEWSHOT}\n\n给定条文（唯一可引用来源）：\n{txt}")
     m = _c.SOURCES[topic.get("law", "民法典")]
     return (f"主题制度：《{topic['title']}》（{m['law']} 第{topic['lo']}—{topic['hi']}条）\n\n"
             f"【当前法律】本题唯一可引用/可链接的法律是《{m['law']}》，简称{m['abbr']}；"
@@ -85,11 +96,8 @@ def _sanitize(body):
 def _validate(body, topic):
     arts = _arts(topic)
     allow = {r["no"] for r in arts}
-    allow_stems = {f'{topic.get("law", "民法典")[:3]}第{r["no"]}条'.replace("中华人民共和", "") for r in arts}
-    import re as _r2
-    abbr = _abbr_of(topic)
-    allow_stems = {f'{abbr}第{r["no"]}条' for r in arts}
-    src = _norm("\n".join(r["text"] for r in _arts(topic)))
+    allow_stems = {f'{r["abbr"]}第{r["no"]}条' for r in arts}
+    src = _norm("\n".join(f'{r["abbr"]}第{r["no"]}条 {r["text"]}' for r in arts))
     for q in re.findall(r"^> 【原文】 (.+)$", body, re.M):
         segs = [s for s in _norm(q).split("……") if s]
         if not all(s in src for s in segs):
@@ -113,7 +121,7 @@ def generate_one(topic):
             err = _validate(body, topic)
             if err is None:
                 fm = (f"---\nid: concept/{topic['slug']}\ntype: concept\ntitle: {title}\n"
-                      f"status: 现行有效\nsources:\n  - {config.SOURCES[topic.get('law', '民法典')]['path']}\n"
+                      f"status: 现行有效\nsources:\n" + "".join(f"  - {r['source_path']}\n" for r in [ {"source_path": config.SOURCES[ln]["path"]} for ln,_,_ in topic.get("ranges", [(topic.get("law","民法典"),0,0)])]) + "updated_at: "
                       f"updated_at: {date.today().isoformat()}\n---\n\n")
                 path.write_text(fm + body + "\n", encoding="utf-8")
                 return (title, "ok")
