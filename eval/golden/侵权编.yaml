@@ -1,0 +1,81 @@
+# 侵权编制度页配套评测题（M11）
+- id: TT-001
+  question: 被人打伤了，他自己先骂人动手，我还能要全部赔偿吗
+  type: answerable
+  expected_articles: [民法典第1173条]
+  key_points: [被侵权人对同一损害的发生或者扩大有过错的, 可以减轻侵权人的责任]
+- id: TT-002
+  question: 两个人合伙把我打了，能要求其中一个人赔全部吗
+  type: answerable
+  expected_articles: [民法典第1168条]
+  key_points: [二人以上共同实施侵权行为造成他人损害的, 应当承担连带责任]
+- id: TT-003
+  question: 打架受伤后我能主张哪些赔偿项目
+  type: answerable
+  expected_articles: [民法典第1179条]
+  key_points: [医疗费护理费交通费营养住院伙食, 误工减少的收入, 残疾赔偿金辅助器具费]
+- id: TT-004
+  question: 我家孩子划了邻居的车，家长要赔吗
+  type: answerable
+  expected_articles: [民法典第1188条]
+  key_points: [无民事行为能力人限制民事行为能力人造成他人损害的, 由监护人承担侵权责任]
+- id: TT-005
+  question: 外卖骑手送单撞伤人，谁赔
+  type: answerable
+  expected_articles: [民法典第1191条]
+  key_points: [用人单位的工作人员因执行工作任务造成他人损害的由用人单位承担侵权责任]
+- id: TT-006
+  question: 商场地面湿滑没警示牌，我摔断了腿，商场能免责吗
+  type: answerable
+  expected_articles: [民法典第1198条]
+  key_points: [经营场所的经营者未尽到安全保障义务造成他人损害的, 应当承担侵权责任]
+- id: TT-007
+  question: 网上有人造谣骂我，平台接到通知不管怎么办
+  type: answerable
+  expected_articles: [民法典第1195条]
+  key_points: [转通知采取删除屏蔽断开链接等必要措施, 未及时采取必要措施的对损害的扩大部分与该网络用户承担连带责任]
+- id: TT-008
+  question: 高压锅爆炸炸伤手，我找卖家还是厂家
+  type: answerable
+  expected_articles: [民法典第1203条]
+  key_points: [可以向生产者也可以向销售者请求赔偿, 首负责任制]
+- id: TT-009
+  question: 被车撞了，交强险不够赔的部分谁承担
+  type: answerable
+  expected_articles: [民法典第1213条]
+  key_points: [先由承保机动车强制保险的保险人在强制保险责任限额范围内予以赔偿, 不足部分由承保机动车商业保险的保险人按照保险合同的约定予以赔偿, 仍然不足或者没有投保机动车商业保险的由侵权人赔偿]
+- id: TT-010
+  question: 做手术前医生没告诉我风险就签了字，术后出问题医院有责任吗
+  type: answerable
+  expected_articles: [民法典第1219条]
+  key_points: [应当说明医疗风险替代医疗方案等情况, 并取得其明确同意, 未尽到说明义务造成损害的应当承担赔偿责任]
+- id: TT-020
+  question: 狗没牵绳咬了小孩，谁赔
+  type: answerable
+  expected_articles: [民法典第1246条]
+  key_points: [未对动物采取安全措施, 违反管理规定, 应当承担侵权责任]
+- id: TT-011
+  question: 隔壁村半夜往河里排废水，把我鱼塘的鱼毒死了，我得自己证明是它排的吗
+  type: answerable
+  expected_articles: [民法典第1230条]
+  key_points: [由侵权人就法律规定的不承担责任或者减轻责任的情形及其行为与损害之间不存在因果关系承担举证责任]
+- id: TT-012
+  question: 在工地旁边被塔吊吊装的货物砸中，这类高度危险作业责任怎么认定
+  type: answerable
+  expected_articles: [民法典第1236条]
+  key_points: [从事高度危险作业造成他人损害的, 应当承担侵权责任（无过错责任）]
+- id: TT-013
+  question: 楼上花盆掉下砸人查不出谁家的，全楼都要赔吗
+  type: answerable
+  expected_articles: [民法典第1254条]
+  key_points: [难以确定具体侵权人的除能够证明自己不是侵权人的外由可能加害的建筑物使用人给予补偿, 公安等机关应当依法及时调查]
+- id: TT-014
+  question: 小区外墙皮脱落砸了车，物业和业主谁担责
+  type: answerable
+  expected_articles: [民法典第1253条]
+  key_points: [建筑物及其搁置物悬挂物发生脱落坠落造成他人损害, 所有人管理人或者使用人不能证明自己没有过错的, 应当承担侵权责任]
+- id: TT-015
+  question: 参加业余足球比赛被撞骨裂，能向球友索赔吗
+  type: answerable
+  expected_articles: [民法典第1176条]
+  key_points: [自愿参加具有一定风险的文体活动, 因其他参加者的行为受到损害的, 受害人不得请求其他参加者承担侵权责任, 其他参加者对损害的发生有故意或者重大过失的除外]
