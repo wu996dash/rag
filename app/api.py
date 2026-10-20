@@ -24,7 +24,8 @@ def stats():
     rows = None
     try:
         from .vectors import client
-        rows = client().get_collection_stats(config.MILVUS_COLLECTION)["row_count"]
+        c = client()
+        rows = sum(int(c.query(collection_name=config.MILVUS_COLLECTION, filter='law == "' + v["law"] + '"', output_fields=["count(*)"])[0]["count(*)"]) for v in config.SOURCES.values())
     except Exception:
         pass
     return {"articles": a, "concepts": c, "cases": ca, "sources": srcs,
