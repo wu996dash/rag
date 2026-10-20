@@ -21,9 +21,9 @@ def _emit(st, streamed=True):
         print(rep["answer"])
     print("\n--- 引用核对 ---")
     for n in rep.get("refs_ok", []):
-        print(f"  [OK] 民法典第{n}条 -> wiki/articles/民法典第{n}条.md")
+        print(f"  [OK] {n} -> wiki/articles/{n}.md")
     for n in rep.get("refs_bad", []):
-        print(f"  [未通过] 民法典第{n}条（不在合法引用集内，可能越权）")
+        print(f"  [未通过] {n}（不在合法引用集内，可能越权）")
     if rep.get("quotes_dropped"):
         print(f"  [剔除] {rep['quotes_dropped']} 条未通过逐字校验的引用")
 def main():

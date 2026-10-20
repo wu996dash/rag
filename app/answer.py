@@ -34,9 +34,9 @@ def verify(answer, reranked, articles_dir, nav_pages=None):
         in_pool = any(r["article_no"] == n for r in reranked) or (fname in nav_body) or (f"民法典第{n}条.md" in nav_body)
         has_file = (articles_dir / fname).exists()
         if in_pool and has_file:
-            report["refs_ok"].append(f"{law_abbr}第{n}")
+            report["refs_ok"].append(f"{law_abbr}第{n}条")
         else:
-            report["refs_bad"].append(f"{law_abbr}第{n}")
+            report["refs_bad"].append(f"{law_abbr}第{n}条")
     lines = []
     for line in answer.splitlines():
         m = re.match(r"^>\s*【原文】\s*(.+)$", line)

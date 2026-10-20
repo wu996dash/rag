@@ -25,7 +25,7 @@ def chat(messages, temperature=0.2, max_tokens=1600, timeout=150, retries=5, mod
         except Exception as e:
             last = e; time.sleep(3)
     raise RuntimeError(f"LLM 调用失败: {last!r}")
-def chat_stream(messages, temperature=0.3, max_tokens=1400, timeout=150):
+def chat_stream(messages, temperature=0.3, max_tokens=1400, timeout=150, model=None):
     """SSE 流式：逐段 yield 增量文本（首 token 即回显，改善体感延迟）。"""
     body = {"model": model or config.LLM_MODEL, "messages": messages,
             "temperature": temperature, "max_tokens": max_tokens, "stream": True}

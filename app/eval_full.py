@@ -4,7 +4,12 @@ from concurrent.futures import ThreadPoolExecutor
 from . import config
 JUDGE_SYS = ("你是严格的法律 RAG 评测员。根据题目、系统回答、评分要点与给定条文，只输出 JSON："
  '{"kp":[每个要点1或0],"support":{"条文号":1或0——该条能否支撑回答中对它的引用主张},'
- '"repealed":0或1——回答是否把已废止规则当作现行依据（正确指出已废止则记0）,"refusal":0或1——回答是否为"依据不足"类拒答,"mustnot":[被违反的禁用概念——仅当该概念作为法律规则被错误主张时才算，日常语词巧合（如交通中断）不算]}')
+ '"repealed":0或1——回答是否把已废止规则当作现行依据（正确指出已废止则记0）,'
+ '"refusal":0或1——回答是否为依据不足类拒答,'
+ '"mustnot":[被违反的禁用概念——仅当该概念作为法律规则被错误主张时才算，日常语词巧合（如交通中断）不算]}。'
+ "评分规则补充：评分要点可含括号内备选说明（如答出任一即可），满足任一备选即该项记1；"
+ "语义等价于要点的表述判1，不要求字面一致；回答先给正确结论再展开的，不因行文顺序扣分。")
+
 _print_lock = threading.Lock()
 def judge(item, answer, top):
     from .llm import chat
@@ -51,7 +56,7 @@ def run_one(idx, total, it, retry=False):
            "correct": (int(bool(kp) and all(v == 1 for v in (j.get("kp") or [0] * len(kp)))) if not nb else None),
            "refusal": int(bool(j.get("refusal")) or "依据不足" in answer),
            "no_ref": int(len(cited) == 0),
-           "cited_ok": [n for n in rep["refs_ok"] if j.get("support", {}).get(n.split("第")[-1], j.get("support", {}).get(n.split("第")[-1] + "条", 1)) == 1],
+           "cited_ok": [n for n in rep["refs_ok"] if j.get("support", {}).get(n.split("第")[-1].rstrip("条"), j.get("support", {}).get(n, 1)) == 1],
            "cited": cited, "repealed": int(bool(j.get("repealed"))),
            "quotes_dropped": rep["quotes_dropped"],
            "must_not_hit": [str(x) for x in (j.get("mustnot") or [])],
