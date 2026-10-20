@@ -1,0 +1,151 @@
+# M12 制度页扩展配套题（合同二批/物权/婚家继/人格权）
+- id: HT-001
+  question: 双方一直书信往来谈合同，什么时候算正式订立
+  type: answerable
+  expected_articles: [民法典第483条]
+  key_points: [承诺生效时合同成立]
+- id: HT-002
+  question: 该办批准手续的合同没去报批，整个合同就废了吗
+  type: answerable
+  expected_articles: [民法典第502条]
+  key_points: [未办理批准等手续影响合同生效的, 不影响合同中履行报批等义务条款以及相关条款的效力]
+- id: HT-003
+  question: 假意谈合作拖住对方，最后不签约导致损失，能索赔吗
+  type: answerable
+  expected_articles: [民法典第500条]
+  key_points: [以磋商为名恶意进行谈判等违背诚信原则的行为, 造成对方损失的应当承担赔偿责任]
+- id: HT-004
+  question: 儿子替父亲还了房租，房东能拒绝吗，还了之后钱算谁的
+  type: answerable
+  expected_articles: [民法典第524条]
+  key_points: [第三人对履行该债权具有合法利益的不得拒绝受领, 履行后债权转让给第三人（法定代位）]
+- id: HT-005
+  question: 他欠我货款我也欠他借款，都能抵消吗
+  type: answerable
+  expected_articles: [民法典第568条]
+  key_points: [标的物种类品质相同的到期债务可以抵销, 应当通知对方, 自通知到达对方时生效]
+- id: HT-006
+  question: 担保合同没写是哪种保证，按一般保证还是连带
+  type: answerable
+  expected_articles: [民法典第686条]
+  key_points: [没有约定或者约定不明确按一般保证承担保证责任]
+- id: HT-007
+  question: 答应送人的东西还没过户，能反悔吗
+  type: answerable
+  expected_articles: [民法典第658条]
+  key_points: [赠与人在赠与财产的权利转移之前可以撤销赠与, 经过公证的或依法不得撤销的具有救灾扶贫等公益道德义务性质的除外]
+- id: HT-008
+  question: 通过中介看了房，为省中介费私下找房东成交行吗
+  type: answerable
+  expected_articles: [民法典第965条]
+  key_points: [利用中介人提供的交易机会绕开中介人直接订立合同的, 仍应当向中介人支付报酬]
+- id: WQ-001
+  question: 买了房签了合同但一直没过户，买卖合同还有效吗
+  type: answerable
+  expected_articles: [民法典第215条]
+  key_points: [合同自依法成立时生效, 未办理物权登记的不影响合同效力（区分原则）]
+- id: WQ-002
+  question: 从无权处分人手里买了二手车，付了合理价款也交付了，原车主能找我要车吗
+  type: answerable
+  expected_articles: [民法典第311条]
+  key_points: [受让时善意、合理价格、应登记的已登记或已交付的取得所有权, 原所有权人向无权处分人请求损害赔偿]
+- id: WQ-003
+  question: 小区业主能把物业公司换掉吗
+  type: answerable
+  expected_articles: [民法典第278条]
+  key_points: [选聘和解聘物业服务企业属于业主共同决定事项, 由业主共同表决程序决定]
+- id: WQ-004
+  question: 邻居装修把承重墙打了还有噪音，我能依据相邻关系主张什么
+  type: answerable
+  expected_articles: [民法典第288条]
+  key_points: [按照有利生产方便生活团结互助公平合理的原则正确处理相邻关系]
+- id: WQ-005
+  question: 兄弟按份共有的房子，老大能单独卖掉吗
+  type: answerable
+  expected_articles: [民法典第301条]
+  key_points: [处分按份共有不动产动产应当经占份额三分之二以上的按份共有人同意]
+- id: WQ-006
+  question: 房子抵押给银行期间还能卖掉吗
+  type: answerable
+  expected_articles: [民法典第406条]
+  key_points: [抵押期间抵押人可以转让抵押财产（另有约定除外）, 应当及时通知抵押权人, 抵押权不受影响]
+- id: WQ-007
+  question: 当铺保管我把典当的字画弄坏了怎么办
+  type: answerable
+  expected_articles: [民法典第432条]
+  key_points: [质权人负有妥善保管质押财产的义务, 保管不善致质押财产毁损灭失的应当承担赔偿责任]
+- id: WQ-008
+  question: 住宅建设用地使用权70年到期后房子还是我的吗
+  type: answerable
+  expected_articles: [民法典第359条]
+  key_points: [住宅建设用地使用权期间届满的自动续期]
+- id: FT-001
+  question: 婚后我上班挣的工资是个人财产还是共同财产
+  type: answerable
+  expected_articles: [民法典第1062条]
+  key_points: [工资奖金劳务报酬在婚姻关系存续期间所得的为夫妻共同财产]
+- id: FT-002
+  question: 双方都同意协议离婚，当天就能办完吗
+  type: answerable
+  expected_articles: [民法典第1077条]
+  key_points: [提交申请之日起三十日内, 任何一方不愿意的可以撤回（离婚冷静期）]
+- id: FT-003
+  question: 孩子一岁半，离婚时抚养权归谁
+  type: answerable
+  expected_articles: [民法典第1084条]
+  key_points: [不满两周岁的子女以由母亲直接抚养为原则]
+- id: FT-004
+  question: 配偶婚内家暴，离婚时我能要求损害赔偿吗
+  type: answerable
+  expected_articles: [民法典第1091条]
+  key_points: [实施家庭暴力导致离婚的, 无过错方有权请求损害赔偿]
+- id: FT-005
+  question: 被胁迫结的婚，还能撤销吗，期限多久
+  type: answerable
+  expected_articles: [民法典第1052条]
+  key_points: [受胁迫的一方可以请求撤销婚姻, 自恢复人身自由之日起一年内提出]
+- id: FT-006
+  question: 收养孩子需要什么条件，要办手续吗
+  type: answerable
+  expected_articles: [民法典第1105条]
+  key_points: [收养应当向县级以上人民政府民政部门登记, 收养关系自登记之日起成立]
+- id: FT-007
+  question: 父亲去世没留遗嘱，遗产按什么顺序继承
+  type: answerable
+  expected_articles: [民法典第1127条]
+  key_points: [第一顺序为配偶子女父母, 有第一顺序继承人的由第一顺序继承]
+- id: FT-008
+  question: 打印的遗嘱有法律效力吗
+  type: answerable
+  expected_articles: [民法典第1136条]
+  key_points: [打印遗嘱应当有两个以上见证人在场见证, 遗嘱人和见证人在每一页签名注明年月日]
+- id: FT-009
+  question: 继承的遗产不够还父亲生前欠的债，我要自掏腰包吗
+  type: answerable
+  expected_articles: [民法典第1161条]
+  key_points: [以所得遗产实际价值为限清偿（限定继承）, 放弃继承的对被继承人依法应当缴纳的税款债务不负清偿责任]
+- id: RG-001
+  question: 被人持续造谣骚扰，名誉权受损，可以要求立刻停止吗，受诉讼时效限制吗
+  type: answerable
+  expected_articles: [民法典第995条, 民法典第997条]
+  key_points: [人格权请求权不适用诉讼时效的规定, 有证据证明正在或即将实施侵害的可申请禁令]
+- id: RG-002
+  question: 有人私下买卖人体器官，这种行为怎么定性
+  type: answerable
+  expected_articles: [民法典第1006条]
+  key_points: [禁止买卖人体细胞人体组织人体器官遗体, 违反的买卖行为无效]
+- id: RG-003
+  question: 有人用AI换脸把我的照片做成视频传播，侵犯什么权利
+  type: answerable
+  expected_articles: [民法典第1019条]
+  key_points: [未经肖像权人同意不得制作使用公开其肖像, 不得利用信息技术手段伪造等方式侵害他人肖像权]
+- id: RG-004
+  question: 媒体监督报道失实，算侵犯名誉权吗
+  type: answerable
+  expected_articles: [民法典第1025条]
+  key_points: [为公共利益实施新闻报道舆论监督的不承担民事责任, 但捏造歪曲事实、严重失实内容未合理核实等除外]
+- id: RG-005
+  question: 室友偷拍我洗澡并发到群里，侵犯了什么权利
+  type: answerable
+  expected_articles: [民法典第1033条]
+  key_points: [除权利人明确同意外任何组织或个人不得进入拍摄窥视拍摄公开披露他人私密空间私密活动, 侵害隐私权]
