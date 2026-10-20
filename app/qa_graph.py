@@ -5,6 +5,7 @@ from langgraph.graph import StateGraph, END
 class QAState(TypedDict, total=False):
     question: str
     expanded: str
+    stream: bool
     nav: list
     hits: list
     top: list
@@ -28,6 +29,15 @@ def node_assemble(st):
     from .answer import assemble
     return {"context": assemble(st["question"], st["nav"], st["top"])}
 def node_generate(st):
+    if st.get("stream"):
+        from .llm import chat_stream
+        from .answer import _messages
+        parts = []
+        for d in chat_stream(_messages(st["context"])):
+            parts.append(d)
+            print(d, end="", flush=True)
+        print()
+        return {"answer": "".join(parts)}
     from .answer import generate
     return {"answer": generate(st["context"])}
 def node_verify(st):

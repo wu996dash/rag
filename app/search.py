@@ -82,7 +82,7 @@ def rerank(question, hits, top=5):
     def _txt(h):
         e = h.get("entity", h)
         return e["text"]
-    docs = [_txt(h)[:800] for h in hits]
+    docs = [_txt(h)[:400] for h in hits]
     scores = []
     with torch.no_grad():
         for i in range(0, len(docs), 4):

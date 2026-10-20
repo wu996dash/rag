@@ -35,7 +35,7 @@ def run_all():
             from .query_rewrite import rewrite
             eq = rewrite(q)
             nav = nav_select(eq)
-            hits = vector_recall(eq, k=12)
+            hits = vector_recall(eq)
             top = rerank(eq, hits, top=5)
             ans = generate(assemble(q, nav, top))
             rep = verify(ans, top, config.REPO / "wiki" / "articles", nav)

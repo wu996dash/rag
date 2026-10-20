@@ -32,7 +32,7 @@ def _merge_weights(ids, toks, scores):
             continue
         words[w] = max(words.get(w, 0.0), float(s))
     return {(zlib.crc32(w.encode("utf-8")) & 0x7FFFFFFF): v for w, v in words.items() if v > 0}
-def encode(texts):
+def _encode_once(texts):
     tok, model, sl, dev, torch = _load()
     dense_all, sparse_all = [], []
     with torch.no_grad():
@@ -47,7 +47,24 @@ def encode(texts):
             dense_all.append(d[0].tolist())
             sparse_all.append(sp)
     return dense_all, sparse_all
-@lru_cache(maxsize=1)
-def encode_fn(texts_tuple):
-    d, s = encode(list(texts_tuple))
-    return d, s
+
+_CACHE = {}
+_CACHE_MAX = 4096
+
+def encode(texts):
+    """带缓存：nav 与 hybrid 对同一查询文本只前向一次；文档嵌入在进程内亦复用。"""
+    d_out, s_out = [None] * len(texts), [None] * len(texts)
+    miss = []
+    for i, t in enumerate(texts):
+        hit = _CACHE.get(t)
+        if hit is not None:
+            d_out[i], s_out[i] = hit
+        else:
+            miss.append(i)
+    if miss:
+        d, sp = _encode_once([texts[i] for i in miss])
+        for j, i in enumerate(miss):
+            d_out[i], s_out[i] = d[j], sp[j]
+            if len(_CACHE) < _CACHE_MAX:
+                _CACHE[texts[i]] = (d[j], sp[j])
+    return d_out, s_out

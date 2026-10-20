@@ -13,8 +13,10 @@ def assemble(question, nav_pages, reranked):
         for r in reranked)
     nav = "\n\n".join(f"=== 制度参考页：{p['title']} ===\n{p['body'][:1600]}" for p in nav_pages[:3])
     return f"问题：{question}\n\n【给定条文】\n{arts}\n\n【制度参考页（编译产物，可参考归纳框架，不得当作原文）】\n{nav}"
+def _messages(context):
+    return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": context}]
 def generate(context):
-    return chat([{"role": "system", "content": SYSTEM}, {"role": "user", "content": context}], max_tokens=1400)
+    return chat(_messages(context), max_tokens=1400)
 def _norm(s):
     return "".join(s.split())
 def verify(answer, reranked, articles_dir, nav_pages=None):
