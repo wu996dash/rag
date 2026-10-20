@@ -1,0 +1,111 @@
+# M10 合同编制度页配套评测题（2026-10-20）
+- id: HB-001
+  question: 对方拒不修理我买的瑕疵设备，我能要求他继续履行或者换一台吗
+  type: answerable
+  expected_articles: [民法典第577条, 民法典第582条]
+  key_points: [可请求修理、重作、更换、退货、减价等补救措施（答出其中继续履行或更换即命中）]
+- id: HB-002
+  question: 合同约定的违约金高得离谱，我能请求法院少赔点吗
+  type: answerable
+  expected_articles: [民法典第585条]
+  key_points: [过分高于造成的损失, 可以请求人民法院或者仲裁机构予以适当减少]
+- id: HB-003
+  question: 违约金低于我实际损失怎么办
+  type: answerable
+  expected_articles: [民法典第585条]
+  key_points: [约定的违约金低于造成的损失, 可以请求增加]
+- id: HB-004
+  question: 定金数额法律上有上限吗
+  type: answerable
+  expected_articles: [民法典第586条]
+  key_points: [不得超过主合同标的额的百分之二十, 超过部分不产生定金的效力]
+- id: HB-005
+  question: 对方一直拖延不交货催告了还没用，我能解除合同吗
+  type: answerable
+  expected_articles: [民法典第563条]
+  key_points: [迟延履行主要债务经催告后在合理期限内仍未履行, 或者迟延履行致使不能实现合同目的, 可以解除]
+- id: HB-006
+  question: 解除权有没有行使期限，放着不用会消灭吗
+  type: answerable
+  expected_articles: [民法典第564条]
+  key_points: [知道或者应当知道解除事由之日起一年内不行使, 或者经催告后在合理期限内不行使, 解除权消灭]
+- id: HB-007
+  question: 发了解除通知对方不认可，合同到底解除了没有
+  type: answerable
+  expected_articles: [民法典第565条]
+  key_points: [通知到达对方时解除, 对方有异议可请求法院或仲裁机构确认解除行为的效力]
+- id: HB-008
+  question: 合同约定先付款后发货，他没付款我先不发货算违约吗
+  type: answerable
+  expected_articles: [民法典第526条]
+  key_points: [先履行一方未履行的后履行一方有权拒绝其履行请求, 顺序在先者在后]
+- id: HB-009
+  question: 听说对方经营状况严重恶化可能收不回货款，我发货前能停下来吗
+  type: answerable
+  expected_articles: [民法典第527条, 民法典第528条]
+  key_points: [中止履行并通知对方, 对方提供适当担保时恢复履行, 合理期限内未恢复履行能力且未提供担保可解除]
+- id: HB-010
+  question: 老赖躺着不收别人欠他的钱，债权人能直接找欠款人要吗
+  type: answerable
+  expected_articles: [民法典第535条]
+  key_points: [以自己的名义代位行使债务人的债权, 专属于债务人自身的除外, 以债权人的到期债权为限, 必要费用由债务人负担]
+- id: HB-011
+  question: 债务人把自己的房子白送给亲戚逃债，债权人能撤销这个赠与吗
+  type: answerable
+  expected_articles: [民法典第538条, 民法典第541条]
+  key_points: [无偿处分财产权益影响债权实现的可以请求撤销, 自债务人的行为发生之日起五年内没有行使撤销权的该撤销权消灭]
+- id: HB-012
+  question: 我把债权转让给别人了但没通知债务人，他还能向原债权人还钱吗
+  type: answerable
+  expected_articles: [民法典第546条]
+  key_points: [未通知债务人的, 该转让对债务人不发生效力]
+- id: HB-013
+  question: 别人要接手我欠你的债务，需要经过你同意吗
+  type: answerable
+  expected_articles: [民法典第551条]
+  key_points: [应当经债权人同意]
+- id: HB-014
+  question: 路上货物被泥石流毁了，买卖标的物的风险从什么时候开始由买家承担
+  type: answerable
+  expected_articles: [民法典第604条]
+  key_points: [交付之前由出卖人承担, 交付之后由买受人承担, 法律另有规定或者当事人另有约定的除外]
+- id: HB-015
+  question: 签了合同当天货就丢了，在途货物的风险谁担
+  type: answerable
+  expected_articles: [民法典第606条]
+  key_points: [出卖人出卖交由承运人运输的在途标的物, 除另有约定外自合同成立时起由买受人承担]
+- id: HB-016
+  question: 朋友间借钱没写利息，到期能要利息吗
+  type: answerable
+  expected_articles: [民法典第680条]
+  key_points: [借款合同对支付利息没有约定的视为没有利息]
+- id: HB-017
+  question: 自然人之间借款利息约定不清楚怎么办
+  type: answerable
+  expected_articles: [民法典第680条]
+  key_points: [自然人之间借款合同对利息约定不明的视为没有利息]
+- id: HB-018
+  question: App用户协议里埋了条免责条款，从来没提示过我，能约束我吗
+  type: answerable
+  expected_articles: [民法典第496条]
+  key_points: [未采取合理方式提示或者说明的, 对方可以主张该条款不成为合同的内容]
+- id: HB-019
+  question: 格式条款把商家所有责任都免了，有效吗
+  type: answerable
+  expected_articles: [民法典第497条]
+  key_points: [不合理地免除或者减轻其责任加重对方责任限制排除对方主要权利的格式条款无效]
+- id: HB-020
+  question: 格式条款有两种以上解释，按谁的版本来
+  type: answerable
+  expected_articles: [民法典第498条]
+  key_points: [应当作出不利于提供格式条款一方的解释]
+- id: HB-021
+  question: 口头租了一年半的房子，这份租赁有什么问题
+  type: answerable
+  expected_articles: [民法典第707条]
+  key_points: [租赁期限六个月以上应当采用书面形式, 未采用书面形式无法确定租赁期限的视为不定期租赁]
+- id: HB-022
+  question: 租约到期我还在住房东也没说什么，之后能一直住吗
+  type: answerable
+  expected_articles: [民法典第734条]
+  key_points: [承租人继续使用且出租人没有提出异议的, 原租赁合同继续有效, 但是租赁期限为不定期]
