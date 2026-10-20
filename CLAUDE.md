@@ -59,6 +59,6 @@
 
 ## 当前状态（2026-10-19）
 
-M4 已完成（2026-10-19）：查询改写+稠密稀疏混合召回+制度页向量导航（D8，G-038 修复）、时效权威 post-gate（D9）、supersede/reinstate 传导演练通过；增量入库 585-598 与特殊诉讼时效期间页；回归前 38 题全对（m4-regression-partial-37of58.jsonl）。环境资源已核验（2026-10-19）：`DASHSCOPE_API_KEY` 实测 qwen-plus 返回 200；bge-m3 与 bge-reranker-v2-m3 权重完整（`E:\edurag\Itcast_qa_system\rag_qa\models\`）；Milvus 127.0.0.1:19531 TCP 连通。下一步是 M5——收尾验收：跑完 58 题全量回归（含 G-038/NB/SOL 批次）、产出 v1 验收报告、README 快速开始（已有）、清理口径；后续扩展方向：GPU 加速（D10）、司法解释与案例入库、合同编/侵权编扩编、案由页。
+M4 已完成（2026-10-19）：查询改写+稠密稀疏混合召回+制度页向量导航（D8，G-038 修复）、时效权威 post-gate（D9）、supersede/reinstate 传导演练通过；增量入库 585-598 与特殊诉讼时效期间页；回归前 38 题全对（m4-regression-partial-37of58.jsonl）。环境资源已核验（2026-10-19）：`DASHSCOPE_API_KEY` 实测 qwen-plus 返回 200；bge-m3 与 bge-reranker-v2-m3 权重完整（`E:\edurag\Itcast_qa_system\rag_qa\models\`）；Milvus 127.0.0.1:19531 TCP 连通。**v1 验收通过（2026-10-20）**：全量回归 58 题 100%/100%/无据等效100%（NB-010 重标 G-044）/时效 0，零回归。后续方向：P1 GPU 提速（D10）、诉讼时效司法解释入库（解 3 项待核实）、合同编/侵权编扩编——注意 m5 附录教训：语料每次扩展都要同步重审题库的无据/有据边界。
 
 目录结构或规则发生变化时，在同一个提交里更新本文件与 任务描述.md；选型变化必须先更新 DECISIONS.md。
