@@ -2,24 +2,10 @@
 - id: NB-002
   question: 醉酒驾驶机动车会判什么罪
   type: no_basis
-- id: NB-003
-  question: 协议离婚的冷静期是三十天吗
-  type: no_basis
-- id: NB-004
-  question: 交通事故伤残赔偿金怎么计算
-  type: no_basis
-- id: NB-005
-  question: 租房合同最长可以签多少年
-  type: no_basis
 - id: NB-006
   question: 民间借贷利率的司法保护上限是多少
-  type: no_basis
-- id: NB-007
-  question: 承租人有没有优先购买权
   type: no_basis
 - id: NB-008
   question: 工伤一次性伤残补助金标准是什么
   type: no_basis
-- id: NB-009
-  question: 高空抛物找不到侵权人时物业担责吗
-  type: no_basis
+# NB-003/004/005/007/009 于全书条文铺满后转正，见 民法典各编.yaml

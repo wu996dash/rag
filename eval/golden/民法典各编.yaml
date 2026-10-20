@@ -1,0 +1,26 @@
+# 全书条文层铺满后转正的题目（2026-10-20）
+- id: C-001
+  question: 协议离婚的冷静期是多少天，期间能反悔吗
+  type: answerable
+  expected_articles: [民法典第1077条]
+  key_points: [三十日, 三十日内可以撤回离婚登记申请]
+- id: C-002
+  question: 交通事故人受伤了，赔偿项目民法典怎么规定
+  type: answerable
+  expected_articles: [民法典第1179条]
+  key_points: [医疗费护理费交通费营养费等合理费用, 造成残疾的增加辅助器具费和残疾赔偿金, 造成死亡的增加丧葬费和死亡赔偿金]
+- id: C-003
+  question: 租房合同最长可以签多少年，超过的部分怎么处理
+  type: answerable
+  expected_articles: [民法典第705条]
+  key_points: [不得超过二十年, 超过部分无效]
+- id: C-004
+  question: 房子要卖，租客有优先购买的权利吗
+  type: answerable
+  expected_articles: [民法典第726条]
+  key_points: [承租人享有以同等条件优先购买的权利, 出租人履行通知义务]
+- id: C-005
+  question: 高空抛物砸伤人查不到具体侵权人，受害人怎么获得赔偿
+  type: answerable
+  expected_articles: [民法典第1254条]
+  key_points: [难以确定具体侵权人的除能够证明自己不是侵权人的外由可能加害的建筑物使用人给予补偿, 经调查难以确定公安等机关应当依法及时调查]
