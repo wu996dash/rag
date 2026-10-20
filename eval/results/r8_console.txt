@@ -1,0 +1,111 @@
+
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 391/391 [00:00<00:00, 23586.55it/s]
+
+Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]
+Loading weights:   1%|          | 4/393 [00:00<00:10, 38.53it/s]
+Loading weights:   6%|▌         | 23/393 [00:00<00:02, 123.49it/s]
+Loading weights:  19%|█▉        | 74/393 [00:00<00:01, 276.65it/s]
+Loading weights:  26%|██▌       | 103/393 [00:00<00:01, 269.07it/s]
+Loading weights:  33%|███▎      | 130/393 [00:00<00:01, 262.43it/s]
+Loading weights:  46%|████▌     | 180/393 [00:00<00:00, 334.55it/s]
+Loading weights:  56%|█████▋    | 222/393 [00:00<00:00, 347.68it/s]
+Loading weights:  65%|██████▌   | 257/393 [00:00<00:00, 296.35it/s]
+Loading weights:  73%|███████▎  | 288/393 [00:01<00:00, 255.99it/s]
+Loading weights: 100%|██████████| 393/393 [00:01<00:00, 348.75it/s]
+[prewarm] 双模型已驻留 GPU
+[3/86] L-002 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[1/86] G-044 correct=1 refusal=1 cited=3 ok=3 repealed=0 drop=0
+[2/86] L-001 correct=1 refusal=0 cited=3 ok=2 repealed=0 drop=0
+[5/86] L-004 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[6/86] L-005 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[4/86] L-003 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[7/86] L-006 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[9/86] L-008 correct=1 refusal=1 cited=1 ok=1 repealed=0 drop=0
+[8/86] L-007 correct=1 refusal=0 cited=6 ok=6 repealed=0 drop=0
+[10/86] L-009 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[11/86] L-010 correct=1 refusal=0 cited=3 ok=2 repealed=0 drop=0
+[13/86] L-012 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[12/86] L-011 correct=1 refusal=0 cited=5 ok=2 repealed=0 drop=0
+[14/86] L-013 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[17/86] LD-002 correct=1 refusal=1 cited=2 ok=2 repealed=0 drop=0
+[15/86] L-014 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[16/86] LD-001 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[19/86] LD-004 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[18/86] LD-003 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[20/86] LD-005 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[22/86] LD-007 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[23/86] LD-008 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[21/86] LD-006 correct=1 refusal=1 cited=0 ok=0 repealed=0 drop=0
+[24/86] C-006 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[25/86] G-001 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[26/86] G-002 correct=1 refusal=0 cited=5 ok=3 repealed=0 drop=0
+[27/86] G-003 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[28/86] G-004 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[30/86] G-006 correct=1 refusal=1 cited=2 ok=2 repealed=0 drop=0
+[31/86] G-007 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[29/86] G-005 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[32/86] G-008 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[34/86] G-010 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[33/86] G-009 correct=1 refusal=0 cited=5 ok=5 repealed=0 drop=0
+[35/86] G-011 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[36/86] G-012 correct=1 refusal=0 cited=2 ok=1 repealed=0 drop=0
+[37/86] G-013 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[38/86] G-014 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[39/86] G-015 correct=1 refusal=0 cited=3 ok=1 repealed=0 drop=0
+[40/86] G-016 correct=1 refusal=0 cited=3 ok=2 repealed=0 drop=0
+[41/86] G-017 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[42/86] G-018 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[43/86] G-019 correct=1 refusal=0 cited=3 ok=2 repealed=0 drop=0
+[45/86] G-021 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[44/86] G-020 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[47/86] G-023 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[46/86] G-022 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[48/86] G-024 correct=1 refusal=0 cited=7 ok=5 repealed=0 drop=0
+[50/86] G-026 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[49/86] G-025 correct=1 refusal=0 cited=5 ok=5 repealed=0 drop=0
+[51/86] G-027 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[52/86] G-028 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[53/86] G-029 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[54/86] G-030 correct=1 refusal=1 cited=2 ok=2 repealed=0 drop=0
+[55/86] G-031 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[56/86] G-032 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[57/86] G-033 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[58/86] G-034 correct=1 refusal=0 cited=2 ok=1 repealed=0 drop=0
+[59/86] G-035 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+[60/86] G-036 correct=1 refusal=1 cited=5 ok=5 repealed=0 drop=0
+[61/86] G-037 correct=1 refusal=1 cited=3 ok=3 repealed=0 drop=0
+[62/86] G-038 correct=1 refusal=0 cited=4 ok=4 repealed=0 drop=0
+[64/86] G-040 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[65/86] G-041 correct=1 refusal=0 cited=3 ok=2 repealed=0 drop=0
+[63/86] G-039 correct=1 refusal=0 cited=4 ok=2 repealed=0 drop=0
+[66/86] G-042 correct=1 refusal=0 cited=2 ok=1 repealed=0 drop=0
+[68/86] G-045 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=1
+[67/86] G-043 correct=1 refusal=0 cited=3 ok=1 repealed=0 drop=1
+[70/86] NB-006 correct=None refusal=1 cited=0 ok=0 repealed=0 drop=0
+[69/86] NB-002 correct=None refusal=1 cited=0 ok=0 repealed=0 drop=0
+[71/86] C-001 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[73/86] C-003 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[72/86] C-002 correct=1 refusal=1 cited=2 ok=1 repealed=0 drop=0
+[74/86] C-004 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[75/86] C-005 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[76/86] SOL-001 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[77/86] SOL-002 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[78/86] SOL-003 correct=1 refusal=0 cited=3 ok=3 repealed=0 drop=0
+[80/86] SOL-005 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[79/86] SOL-004 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[81/86] J-001 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[82/86] J-002 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[84/86] J-004 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[83/86] J-003 correct=1 refusal=0 cited=2 ok=1 repealed=0 drop=1
+[86/86] J-006 correct=1 refusal=0 cited=1 ok=1 repealed=0 drop=0
+[85/86] J-005 correct=1 refusal=0 cited=2 ok=2 repealed=0 drop=0
+
+# 评测报告（2026-10-20 16:27）
+- 题量：86（可答 84 / 无据 2），耗时 500s，判官 qwen-plus
+- 回答正确率：100%（出口 >= 85%）
+- 引用精确率：89%（187/210，出口 >= 95%）
+- 无据拒答率：100%（出口 >= 90%）
+- 时效违规：0 处（零容忍：>=1 即不通过）
+- must_not 违规：0 题
+- 伪引用剔除总数：3
