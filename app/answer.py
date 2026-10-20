@@ -6,14 +6,19 @@ SYSTEM = ("你是法律知识库问答引擎。硬规则："
  "2) 不得引用给定材料之外的任何法条编号；材料覆盖不到的内容明确写“依据不足，待核实”；"
  "3) 涉及时效必须标注“现行有效”与施行日期；"
  "4) 正文之后逐行列出引用清单，格式：REF: 法名第N条（法名必须与给定条文标题一致，如民法典第188条、诉讼时效规定第3条）——凡正文分析实际依据且能支撑结论的条文（含出自制度页原文块的条文）都应列入；若整体判断依据不足，只输出“依据不足，待核实”及一句理由，不得输出任何 REF 行；"
- "5) REF 只列对结论有直接支撑的条文，仅作背景铺垫的条文不得列入；\n"
- "6) 最后一行固定输出：本内容仅供参考，不构成正式法律意见；重大事项请咨询执业律师。")
-def assemble(question, nav_pages, reranked):
+ "5) 存在【近期对话】时，结合它理解追问与指代（如“我刚刚说了什么”“那第二种呢”）；纯寒暄可简短回应并引导，无需 REF；但法律结论与引用仍只能来自给定条文与制度页；\n"
+ "6) REF 只列对结论有直接支撑的条文，仅作背景铺垫的条文不得列入；\n"
+ "7) 最后一行固定输出：本内容仅供参考，不构成正式法律意见；重大事项请咨询执业律师。")
+def assemble(question, nav_pages, reranked, history=None):
     arts = "\n\n".join(
         f"《{r.get('law') or '中华人民共和国民法典'}》第{r['article_no']}条（{r['status']}）：\n{r['text']}"
         for r in reranked)
     nav = "\n\n".join(f"=== 制度参考页：{p['title']} ===\n{p['body'][:1600]}" for p in nav_pages[:3])
-    return f"问题：{question}\n\n【给定条文】\n{arts}\n\n【制度参考页（编译产物，可参考归纳框架，不得当作原文）】\n{nav}"
+    ctx = ""
+    if history:
+        recent = "\n".join(f"用户：{h.get('q','')}\n助手：{(h.get('a') or '')[:400]}" for h in history[-5:])
+        ctx = f"【近期对话（仅用于理解指代与追问，不得作为法律依据）】\n{recent}\n\n"
+    return ctx + f"问题：{question}\n\n【给定条文】\n{arts}\n\n【制度参考页（编译产物，可参考归纳框架，不得当作原文）】\n{nav}"
 def _messages(context):
     return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": context}]
 def generate(context):

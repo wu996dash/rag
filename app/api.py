@@ -130,11 +130,14 @@ async def ws_ask(ws: WebSocket):
             q = (payload.get("text") or "").strip()
             if not q:
                 continue
+            raw_h = payload.get("history") or []
+            history = [{"q": str(h.get("q") or "")[:200], "a": str(h.get("a") or "")[:600]}
+                       for h in raw_h[-5:] if isinstance(h, dict)][-5:]
             evtq = queue.Queue()
-            def _worker(question=q, sink=evtq):
+            def _worker(question=q, hist=history, sink=evtq):
                 try:
                     from .pipeline import events
-                    for ev in events(question):
+                    for ev in events(question, hist):
                         sink.put(ev)
                 except Exception as e:
                     sink.put({"type": "error", "msg": repr(e)})

@@ -100,7 +100,8 @@ async function send(){
     else if(ev.type==='done'){bot.done=true;busy.value=false;ws.removeEventListener('message',onMsg);persist()}
     else if(ev.type==='error'){bot.notice='后端错误：'+ev.msg;busy.value=false;ws.removeEventListener('message',onMsg)}}
   ws.addEventListener('message',onMsg)
-  ws.send(JSON.stringify({text:q}))
+  const hist = messages.value.filter(m=>m.role==='bot'&&m.done).slice(-5).map(m=>({q:m.q,a:m.text}))
+  ws.send(JSON.stringify({text:q, history:hist}))
 }
 async function persist(){
   if(!curId.value){curId.value=convId||('c'+Date.now().toString(36));}

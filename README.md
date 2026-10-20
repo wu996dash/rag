@@ -71,4 +71,5 @@ serve.cmd            # 或 .venv\Scripts\python.exe -m uvicorn app.api:app --por
 - 内置管理员：`admin / admin@2026`（首次登录后请改密：MySQL users 表重置或后续加改密页）
 - 管理员独有：侧栏「法律材料录入」（POST /api/materials，存 sources/ 并自动登记，编译仍走人工 ingest）
 - 会话记忆：每用户最近 5 条对话，服务端 MySQL 存储，跨设备跟随账号
+- **对话内上下文**：每次提问自动携带最近 5 轮问答——查询改写层据此补全省略追问（\u201c那中止呢\u201d\u2192\u201c诉讼时效中止\u201d），生成层据此理解指代（\u201c我刚刚说了什么\u201d）；上下文仅作理解用途，法律结论仍只出自给定条文/制度页
 - 连接配置在 .env（MYSQL_USER=viki_rag 专用最小权限账号，root 仅用于建库建号）

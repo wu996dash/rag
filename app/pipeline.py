@@ -7,7 +7,7 @@ def _norm_law(law: str) -> str:
         if v["law"] == law or v["abbr"] in law:
             return v["abbr"]
     return law[:6] if law else "?"
-def events(question: str):
+def events(question: str, history=None):
     from .search import nav_select, vector_recall, rerank
     from .answer import assemble, _messages
     from .query_rewrite import rewrite
@@ -16,7 +16,7 @@ def events(question: str):
     from . import config
     t0 = time.time()
     yield {"type": "stage", "stage": "rewrite", "ms": 0}
-    t = time.time(); eq = rewrite(question)
+    t = time.time(); eq = rewrite(question, history)
     yield {"type": "stage", "stage": "rewrite", "ms": int((time.time()-t)*1000), "detail": eq}
     t = time.time(); nav = nav_select(eq)
     yield {"type": "stage", "stage": "nav", "ms": int((time.time()-t)*1000),
@@ -27,7 +27,7 @@ def events(question: str):
     t = time.time(); top = rerank(eq, hits, top=5)
     yield {"type": "stage", "stage": "rerank", "ms": int((time.time()-t)*1000),
            "items": [{"law": _norm_law(r["law"]), "no": r["article_no"], "score": r["score"]} for r in top]}
-    ctx = assemble(question, nav, top)
+    ctx = assemble(question, nav, top, history)
     yield {"type": "stage", "stage": "assemble", "ms": 0, "chars": len(ctx)}
     parts = []
     for delta in chat_stream(_messages(ctx)):
