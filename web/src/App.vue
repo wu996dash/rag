@@ -50,9 +50,10 @@ function send() {
   const q = input.value.trim()
   if (!q || busy.value || !ws || ws.readyState !== 1) return
   messages.value.push({ role: 'user', text: q })
-  const bot = { role: 'bot', text: '', stages: [], refs: [], notice: '' }
-  messages.value.push(bot); input.value = ''; busy.value = true; scroll()
-  const sendBtn = () => {}
+  messages.value.push({ role: 'bot', text: '', stages: [], refs: [], notice: '' })
+  // 必须取数组内的响应式代理对象——直接改 push 前的原始对象不会触发渲染
+  const bot = messages.value[messages.value.length - 1]
+  input.value = ''; busy.value = true; scroll()
   let raw = ''
   const timer = setTimeout(() => { if (busy.value) { bot.notice = '响应超时，请重试（服务是否已启动？）'; } }, 90000)
   const handler = (ev) => {
