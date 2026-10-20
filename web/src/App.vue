@@ -32,11 +32,11 @@
             <div class="refs" v-if="m.refs && m.refs.length">
               <span v-for="r in m.refs" :key="r.name" class="ref-chip" :class="{bad:r.bad,drop:r.drop}" @click="openPage(r.name)" title="点击核对原文">{{ r.name }}{{ r.drop ? '（已剔除）' : '' }}</span>
             </div>
-            <div class="vote" v-if="m.q && m.done">这条回答有帮助吗？
-              <template v-if="!m.vote"><span class="vbtn" @click="cast(m,'up')">👍 有用</span><span class="vbtn" @click="cast(m,'down')">👎 有问题</span></template>
-              <template v-else-if="m.vote==='up'">已记录，谢谢 👍</template>
-              <template v-else-if="m.showNote"><input class="note-in" v-model="m.note" placeholder="哪里不对？（选填）" @keyup.enter="cast(m,'down',true)"/><span class="vbtn" @click="cast(m,'down',true)">提交</span><span class="vbtn dim" @click="m.vote='down'">跳过</span></template>
-              <template v-else>已记录 👎，进入人工复核</template>
+            <div class="vote" v-if="m.q && m.done">
+              <template v-if="m.vote==='up'">这条回答有帮助吗？已记录，谢谢 👍</template>
+              <template v-else-if="m.vote==='down'">已记录 👎，会进入人工复核队列</template>
+              <template v-else-if="m.showNote">哪里有问题？<input class="note-in" v-model="m.note" placeholder="选填（如：漏了第704条）" @keyup.enter="cast(m,'down',true)"/><span class="vbtn" @click="cast(m,'down',true)">提交复核</span><span class="vbtn dim" @click="cast(m,'down',true)">跳过</span></template>
+              <template v-else>这条回答有帮助吗？<span class="vbtn" @click="cast(m,'up')">👍 有用</span><span class="vbtn" @click="cast(m,'down')">👎 有问题</span></template>
             </div>
           </template>
         </div>
