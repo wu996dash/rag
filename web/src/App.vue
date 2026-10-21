@@ -55,7 +55,18 @@
         <input ref="fi" type="file" accept=".docx,.md,.txt" style="display:none" @change="onPick"/>
         <p class="err" v-if="mErr">{{ mErr }}</p><p class="okline" v-if="mOk">{{ mOk }}</p>
       </div>
-      <div class="mfiles"><b>现有材料</b><div v-for="f in mfiles" :key="f">· {{ f }}</div></div>
+      <div class="mfiles"><b>材料列表</b>
+        <div v-for="f in mfiles" :key="f.name" class="mrow">
+          <span class="mname" :title="f.name">{{ f.name }}</span>
+          <template v-if="f.compiled"><em class="tag ok">已编译·{{ f.abbr }}</em></template>
+          <template v-else-if="/\.(docx|md|txt)$/.test(f.name)">
+            <input class="abbin" v-model="f.abbr" placeholder="简称(自动)" @focus="fillAbbr(f)"/>
+            <button class="mini" :disabled="f.busy" @click="compile(f)">{{ f.busy?'编译中…':'⚙ 编译入库' }}</button>
+            <span class="tstat">{{ f.state||'' }}</span>
+          </template>
+          <template v-else><em class="tag">非文本·跳过</em></template>
+        </div>
+      </div>
     </section>
     <div class="drawer" v-if="page"><span class="close" @click="page=null">✕ 关闭</span><h3>{{ page.path }}</h3><pre>{{ page.content }}</pre></div>
   </div>
@@ -145,7 +156,23 @@ async function uploadFile(f){
   mOk.value='已入库 '+r.path+'（'+r.kb+'KB'+(r.articles?'，检出条文标记 '+r.articles+' 处':'')+'）——'+r.next
   loadFiles()
 }
-async function loadFiles(){const r=await api('/api/materials');if(r.files)mfiles.value=r.files}
+async function loadFiles(){const r=await api('/api/materials');if(r.files)mfiles.value=r.files.map(f=>typeof f==='string'?{name:f,compiled:false,abbr:''}:f)}
+function fillAbbr(f){if(!f.abbr)f.abbr=f.name.replace(/\.(docx|md|txt)$/,'').replace(/_\d{6,8}$/,'').replace(/^中华人民共和国/,'').slice(0,14)}
+async function compile(f){
+  if(!f.abbr)fillAbbr(f)
+  f.busy=true;f.state='排队…'
+  const r=await api('/api/compile',{path:'sources/'+f.name,abbr:f.abbr})
+  if(r.error){f.busy=false;f.state='✕ '+r.error;return}
+  const tid=r.task
+  const timer=setInterval(async()=>{
+    const st=await api('/api/compile/'+tid)
+    if(st.state==='done'){clearInterval(timer);f.busy=false;f.state='';f.compiled=true;f.abbr=f.abbr
+      mOk.value='✅ '+f.name+' 编译完成：条文 '+st.articles+' → 页面 '+st.pages+' → 向量 '+st.rows
+      stats.value=await (await fetch('/api/stats')).json()}
+    else if(st.state==='error'){clearInterval(timer);f.busy=false;f.state='✕ '+(st.msg||'失败')}
+    else f.state=(st.msg||'进行中')+'…'
+  },2000)
+}
 async function boot(){
   try{stats.value=await (await fetch('/api/stats')).json()}catch(e){}
   connect();loadSessions()

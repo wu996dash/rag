@@ -103,3 +103,11 @@ MYSQL_PORT = int(env("MYSQL_PORT", "3306"))
 MYSQL_USER = env("MYSQL_USER", "root")
 MYSQL_PASSWORD = env("MYSQL_PASSWORD", "")
 MYSQL_DB = env("MYSQL_DB", "viki_rag")
+# 运行时登记的法律（管理端"编译入库"写入，重启后仍生效）
+import json as _json
+_lp = REPO / "data" / "laws.json"
+if _lp.exists():
+    try:
+        SOURCES.update(_json.loads(_lp.read_text(encoding="utf-8")))
+    except Exception:
+        pass

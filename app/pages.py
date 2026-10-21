@@ -22,7 +22,8 @@ def render(name: str, lo: int, hi: int):
             continue
         today = date.today().isoformat()
         org = "\n".join(f'> 【原文】 {c}' for c in r["clauses"])
-        linked = LIMITATION_LINKED.get(r["no"], "（关联制度页待编译）\n- [入口导航](../index.md)")
+        _dft = "（关联制度页待编译）\n- [入口导航](../index.md)"
+        linked = LIMITATION_LINKED.get(r["no"], _dft) if meta["abbr"] == "民法典" else _dft
         body = f'''---
 id: article/{meta["slug"]}-{r["no"]}
 type: article

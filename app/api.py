@@ -155,9 +155,40 @@ async def list_materials(req: Request):
         return JSONResponse({"error": "未登录"}, status_code=401)
     if u["role"] != "admin":
         return JSONResponse({"error": "仅管理员可见"}, status_code=403)
-    files = sorted(p.name for p in (config.REPO / "sources").iterdir()
-                   if p.is_file() and p.name != "README.md")
+    known = {v["path"].split("/")[-1] for v in config.SOURCES.values()}
+    files = [{"name": p.name, "compiled": p.name in known,
+              "abbr": next((k for k, v in config.SOURCES.items() if v["path"].endswith(p.name)), "")}
+             for p in sorted((config.REPO / "sources").iterdir())
+             if p.is_file() and p.name != "README.md"]
     return {"files": files}
+# ---------- 管理端：编译入库 ----------
+@app.post("/api/compile")
+async def compile_start(req: Request):
+    u = _who(req)
+    if not u:
+        return JSONResponse({"error": "未登录"}, status_code=401)
+    if u["role"] != "admin":
+        return JSONResponse({"error": "仅管理员可编译入库"}, status_code=403)
+    b = await req.json()
+    path = str(b.get("path") or "")
+    abbr = str(b.get("abbr") or "").strip()
+    if not path.startswith("sources/") or not abbr or len(abbr) > 16:
+        return JSONResponse({"error": "参数不合法（path 需 sources/ 下，简称 1-16 字）"}, status_code=400)
+    if not (config.REPO / path).exists():
+        return JSONResponse({"error": "文件不存在"}, status_code=404)
+    from . import compile as comp
+    tid = comp.start(path, abbr, str(b.get("effective_date") or "").strip())
+    L.info("编译任务启动 admin=%s path=%s abbr=%s task=%s", u["username"], path, abbr, tid)
+    return {"task": tid}
+@app.get("/api/compile/{tid}")
+async def compile_status(tid: str, req: Request):
+    u = _who(req)
+    if not u:
+        return JSONResponse({"error": "未登录"}, status_code=401)
+    from . import compile as comp
+    st = comp.status(tid)
+    return st or {"state": "unknown"}
+
 # ---------- 问答 WS（需登录）与反馈 ----------
 @app.websocket("/ws/ask")
 async def ws_ask(ws: WebSocket):
