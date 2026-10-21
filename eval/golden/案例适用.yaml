@@ -1,0 +1,21 @@
+# 案例通道验收题（事实涵摄型，考核 nav 能否命中案例页并进入回答）
+- id: CJ-001
+  question: 有人用AI换脸把我的照片做成恶搞视频发到行业群里，我能告赢吗
+  type: answerable
+  expected_articles: [民法典第1019条]
+  key_points: [未经肖像权人同意不得制作使用公开其肖像, 不得利用信息技术手段伪造等方式侵害他人肖像权]
+- id: CJ-002
+  question: 朋友饭桌上一直撺掇我喝点酒没事开不回去被查不到，我醉驾出事他有没有责任
+  type: answerable
+  expected_articles: [刑法第133条之一, 刑法第29条]
+  key_points: [教唆他人醉酒驾驶情节恶劣以危险驾驶罪共犯论处, 教唆他人犯罪的按其在共同犯罪中所起的作用处罚]
+- id: CJ-003
+  question: 我开了汽车辅助驾驶功能人坐副驾睡觉让车自己开，算不算我驾驶
+  type: answerable
+  expected_articles: [刑法第133条之一]
+  key_points: [辅助驾驶系统不能代替驾驶人成为驾驶主体, 驾驶人仍是实际执行驾驶任务的人负有安全責任]
+- id: CJ-004
+  question: 吸毒之后开车上路撞了人，是按交通肇事还是更重的罪处理
+  type: answerable
+  expected_articles: [刑法第114条, 刑法第115条]
+  key_points: [明知吸毒后驾车有现实危险仍高速行驶连续冲撞的认定危害公共安全故意, 以以危险方法危害公共安全罪论处]

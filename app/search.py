@@ -25,10 +25,13 @@ def nav_select(question, topk=3):
     """M4：制度页向量导航优先，空库回退 bigram。"""
     try:
         from .conceptnav import nav_pages
-        pages = nav_pages(question, topk)
+        pages = nav_pages(question, topk + 3)
         if pages:
+            concepts = [p for p in pages if not p["name"].startswith("指导性案例")][:topk]
+            cases = [p for p in pages if p["name"].startswith("指导性案例")][:1]
+            picked = concepts + cases
             return [{"name": p["name"], "title": p["title"], "body": p["body"],
-                     "bg": set(), "links": set()} for p in pages]
+                     "bg": set(), "links": set()} for p in picked]
     except Exception:
         pass
     qb = _bigrams(question)

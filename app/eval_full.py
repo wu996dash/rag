@@ -13,7 +13,8 @@ JUDGE_SYS = ("你是严格的法律 RAG 评测员。根据题目、系统回答�
  "判例1（判1）：回答称『竞业限制不适用于普通员工（劳动合同法第24条）』，第24条列明人员范围限于高管高技及保密人员 -> 合理蕴含，判1。\n"
  "判例2（判0）：回答称『利息超过LPR四倍部分无效（民法典第680条）』，第680条仅规定不得高利放贷、利率不得违反国家有关规定，未含LPR四倍 -> 具体标准不在该条，判0。\n"
  "kp 规则：评分要点含括号备选说明时满足任一备选即判1；语义等价表述判1；回答先给正确结论再展开的不扣分。"
- "refusal：回答明确声明依据不足/待核实且未将无依据内容写成确定结论 -> 1。"
+ "refusal：回答明确声明依据不足/待核实且未将无依据内容写成确定结论 -> 1。\n"
+ "mustnot 规则：只能针对用户消息中给出的禁用概念清单判定违反；清单为空必须输出空数组，严禁把评分要点或自创概念填入。"
  "repealed：把已废止规则当作现行依据才判1；正确指出已废止则0。"
  "mustnot：仅当禁用概念被作为法律规则错误主张才计入；日常语词巧合（如『交通中断』）不计。")
 
@@ -21,7 +22,8 @@ _print_lock = threading.Lock()
 def judge(item, answer, top):
     from .llm import chat
     arts = "\n".join(f"{r.get('law','')[-6:]}第{r['article_no']}条: " + r["text"][:650].replace("\n", " ") for r in top)
-    user = (f"题目：{item['question']}\n评分要点：{item.get('key_points', [])}\n系统回答：\n{answer}\n给定条文：\n{arts}\n"
+    user = (f"题目：{item['question']}\n评分要点：{item.get('key_points', [])}\n禁用概念清单：{item.get('must_not', [])}\n"
+            f"系统回答：\n{answer}\n给定条文：\n{arts}\n"
             "注意：type=no_basis 的题目，正确行为是明确声明依据不足（refusal=1）。")
     out = chat([{"role": "system", "content": JUDGE_SYS}, {"role": "user", "content": user}],
                temperature=0.0, max_tokens=300, model=config.LLM_MODEL_JUDGE)

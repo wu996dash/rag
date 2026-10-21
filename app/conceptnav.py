@@ -26,6 +26,7 @@ def build(rebuild=True):
     from .m3encode import encode
     c = ensure_index(rebuild=rebuild)
     pages = sorted((config.REPO / "wiki" / "concepts").glob("*.md"))
+    pages += sorted((config.REPO / "wiki" / "cases").glob("*.md"))
     pages = [p for p in pages if p.name != "README.md"]
     rows = []
     for i, p in enumerate(pages):
@@ -34,7 +35,7 @@ def build(rebuild=True):
         mt = _re.search(r"^title:\s*(.+)$", txt, _re.M)
         title = mt.group(1) if mt else p.stem
         d, _ = encode([f"{title}\n{body[:700]}"])
-        rows.append({"id": 1000 + i, "name": p.name, "title": title, "body": body[:6500], "embedding": d[0]})
+        rows.append({"id": (1000 if p.parent.name == "concepts" else 5000) + i, "name": p.name, "title": title, "body": body[:6500], "embedding": d[0]})
     for i in range(0, len(rows), 32):
         c.upsert(collection_name=COL, data=rows[i:i + 32])
     return len(rows)
