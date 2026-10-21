@@ -73,3 +73,9 @@ serve.cmd            # 或 .venv\Scripts\python.exe -m uvicorn app.api:app --por
 - 会话记忆：每用户最近 5 条对话，服务端 MySQL 存储，跨设备跟随账号
 - **对话内上下文**：每次提问自动携带最近 5 轮问答——查询改写层据此补全省略追问（\u201c那中止呢\u201d\u2192\u201c诉讼时效中止\u201d），生成层据此理解指代（\u201c我刚刚说了什么\u201d）；上下文仅作理解用途，法律结论仍只出自给定条文/制度页
 - 连接配置在 .env（MYSQL_USER=viki_rag 专用最小权限账号，root 仅用于建库建号）
+
+## 日志运维
+
+- 位置：`logs/app.log`（INFO 运行流水：登录/问答全链路 rid/反馈/材料/废止/评测）+ `logs/error.log`（ERROR 含堆栈）
+- 轮转：按天切割，保留 14 天；uvicorn 访问日志并入；WS token 自动脱敏
+- 查看：`python -m app.cli logs -n 50`｜`--err` 看错误；排障时用提问行的 rid 串联整条链路

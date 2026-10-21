@@ -4,7 +4,8 @@ import asyncio, json, queue, re, threading, time
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Query
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from . import config, auth
+from . import config, auth, log
+L = log.get("api")
 app = FastAPI(title="viki_rag API")
 def _who(req: Request):
     h = req.headers.get("authorization") or ""
@@ -14,6 +15,7 @@ def _who(req: Request):
 def _warm():
     auth.init_db()
     auth.create_default_admin()
+    L.info("服务启动｜Milvus=%s｜MySQL=%s@%s｜日志=logs/app.log", config.MILVUS_URI, config.MYSQL_USER, config.MYSQL_HOST)
     def _go():
         from .m3encode import _load
         from .search import _reranker
@@ -23,11 +25,15 @@ def _warm():
 @app.post("/api/auth/register")
 async def register(req: Request):
     b = await req.json()
-    return JSONResponse(auth.register(b.get("username"), b.get("password")))
+    r = auth.register(b.get("username"), b.get("password"))
+    (L.warning if "error" in r else L.info)("注册%s user=%s%s", "拒绝" if "error" in r else "成功", b.get("username"), "" if "error" not in r else "｜" + r["error"])
+    return JSONResponse(r)
 @app.post("/api/auth/login")
 async def login(req: Request):
     b = await req.json()
-    return JSONResponse(auth.login(b.get("username"), b.get("password")))
+    r = auth.login(b.get("username"), b.get("password"))
+    (L.warning if "error" in r else L.info)("登录%s user=%s%s", "失败" if "error" in r else "成功", b.get("username"), "" if "error" not in r else "｜" + r["error"])
+    return JSONResponse(r)
 @app.get("/api/auth/me")
 async def me(req: Request):
     u = _who(req)
@@ -52,6 +58,7 @@ async def delete_session(cid: str, req: Request):
     if not u:
         return JSONResponse({"error": "未登录"}, status_code=401)
     n = auth.delete_session(u["username"], cid)
+    L.info("删除对话 user=%s id=%s ok=%s", u["username"], cid, n > 0)
     return {"ok": n > 0}
 
 # ---------- 统计与原文 ----------
@@ -90,6 +97,7 @@ async def add_material(req: Request):
     if not u:
         return JSONResponse({"error": "未登录"}, status_code=401)
     if u["role"] != "admin":
+        L.warning("材料录入被拒 user=%s（非管理员）", u["username"])
         return JSONResponse({"error": "仅管理员可录入法律材料"}, status_code=403)
     b = await req.json()
     name = str(b.get("name") or "").strip()
@@ -111,6 +119,7 @@ async def add_material(req: Request):
     rm = config.REPO / "sources" / "README.md"
     rm.write_text(rm.read_text(encoding="utf-8") +
                   "\n- " + fname + "｜管理端录入 " + stamp[:10] + "｜待核验｜待编译\n", encoding="utf-8")
+    L.info("材料录入 admin=%s file=%s 字数=%d（待核验待编译）", u["username"], fname, len(text))
     return {"ok": True, "path": "sources/" + fname,
             "next": "编译需人工：登记 config.SOURCES 后 python -m app.cli ingest"}
 @app.get("/api/materials")
@@ -129,9 +138,13 @@ async def ws_ask(ws: WebSocket):
     tok = ws.query_params.get("token") or ""
     user = auth.user_of(tok)
     if not user:
+        L.warning("WS 拒绝：无效或缺失 token")
         await ws.close(code=4401)
         return
     await ws.accept()
+    import uuid
+    rid = uuid.uuid4().hex[:8]
+    L.info("WS 连接 user=%s rid=%s", user["username"], rid)
     try:
         while True:
             payload = json.loads(await ws.receive_text())
@@ -142,12 +155,14 @@ async def ws_ask(ws: WebSocket):
             history = [{"q": str(h.get("q") or "")[:200], "a": str(h.get("a") or "")[:600]}
                        for h in raw_h[-5:] if isinstance(h, dict)][-5:]
             evtq = queue.Queue()
+            L.info("[%s] 提问 user=%s q=%s", rid, user["username"], q[:50])
             def _worker(question=q, hist=history, sink=evtq):
                 try:
                     from .pipeline import events
-                    for ev in events(question, hist):
+                    for ev in events(question, hist, rid):
                         sink.put(ev)
                 except Exception as e:
+                    L.exception("[%s] 流水线异常", rid)
                     sink.put({"type": "error", "msg": repr(e)})
                 finally:
                     sink.put(None)
@@ -156,6 +171,10 @@ async def ws_ask(ws: WebSocket):
                 ev = await asyncio.to_thread(evtq.get)
                 if ev is None:
                     break
+                if ev.get("type") == "verify":
+                    L.info("[%s] 校验 ok=%d bad=%d 剔除=%d", rid, len(ev["refs_ok"]), len(ev["refs_bad"]), ev["dropped"])
+                elif ev.get("type") == "done":
+                    L.info("[%s] 完成 elapsed=%sms", rid, ev.get("elapsed_ms"))
                 await ws.send_json(ev)
     except WebSocketDisconnect:
         pass
@@ -172,6 +191,7 @@ async def feedback(req: Request):
            "answer": re.sub(r"\s+", " ", str(b.get("answer") or ""))[:3000], "reviewed": False}
     with open(config.REPO / "eval" / "feedback.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    L.info("反馈 user=%s verdict=%s q=%s", user["username"], v, q[:40])
     return {"ok": True}
 dist = config.REPO / "web" / "dist"
 if dist.exists():

@@ -1,7 +1,8 @@
 """M3+ 并发评测：ThreadPool 并行独立题目；判官走 LLM_MODEL_JUDGE；--only 过滤支持增量评测。"""
 import argparse, json, re, time, glob, threading
 from concurrent.futures import ThreadPoolExecutor
-from . import config
+from . import config, log
+L = log.get("eval")
 JUDGE_SYS = ("你是严格的法律 RAG 评测员。根据题目、系统回答、评分要点与给定条文，只输出 JSON："
  '{"kp":[每个要点1或0],"support":{"条文号":1或0},'
  '"repealed":0或1,"refusal":0或1,"mustnot":[被违反的禁用概念]}。\n'
@@ -78,6 +79,7 @@ def _prewarm():
     print("[prewarm] 双模型已驻留 GPU", flush=True)
 def run_all(limit=999, only=None, workers=3):
     items = load_items(only)[:limit]
+    L.info("评测开始 题量=%d workers=%d only=%s", len(items), workers, only or "-")
     _prewarm()
     t0 = time.time()
     pending = list(enumerate(items, 1))
@@ -114,6 +116,8 @@ def _summary(rs, t0):
              f"- must_not 违规：{len(mn)} 题" + (str([m['id'] for m in mn]) if mn else ""),
              f"- 伪引用剔除总数：{sum(r['quotes_dropped'] for r in rs)}"]
     txt = "\n".join(lines)
+    L.info("评测汇总 正确率%.0f%% 支撑%.0f%% 拒答%.0f%% 时效=%d mustnot=%d 剔除=%d",
+           acc * 100, prec * 100, ref * 100, rep, len(mn), sum(r["quotes_dropped"] for r in rs))
     print("\n" + txt)
     tag = time.strftime("%Y%m%d-%H%M")
     (config.REPO / "eval" / "results" / f"report-{tag}.md").write_text(txt + "\n", encoding="utf-8")

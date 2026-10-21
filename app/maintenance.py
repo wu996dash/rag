@@ -1,7 +1,8 @@
 """维护回路（G4/M4）：效力变更传导——条文页 status、受影响制度页提示、Milvus 过滤位三步联动。"""
 import re
 from datetime import date
-from . import config
+from . import config, log
+L = log.get("maintenance")
 def supersede(article_no: int, note: str, status: str = "已废止", replaced_by: str = ""):
     ap = config.REPO / "wiki" / "articles" / f"民法典第{article_no}条.md"
     txt = ap.read_text(encoding="utf-8")
@@ -23,6 +24,7 @@ def supersede(article_no: int, note: str, status: str = "已废止", replaced_by
         ok = set_status(config.SOURCES["民法典"]["id_base"], article_no, status)
     except Exception:
         ok = False
+    L.warning("supersede 条文=%s→%s 传导制度页=%s 向量快照=%s", article_no, status, marked, "已更新" if ok else "失败(以wiki为准)")
     return {"article": ap.name, "concepts_marked": marked, "milvus_snapshot_updated": ok, "authority": "wiki frontmatter（检索侧 post-gate 过滤）"}
 def reinstate_demo(article_no: int):
     """演示回滚：git 还原页面 + Milvus 恢复现行有效（仅限维护流程演练）。"""
@@ -35,4 +37,6 @@ def reinstate_demo(article_no: int):
             t = re.sub(r"\n## ⚠️ 时效提示\n.*?(?=\Z)", "\n", t, flags=re.S)
             cp.write_text(t, encoding="utf-8")
     from .vectors import set_status
-    return set_status(config.SOURCES["民法典"]["id_base"], article_no, "现行有效")
+    r = set_status(config.SOURCES["民法典"]["id_base"], article_no, "现行有效")
+    L.info("reinstate 条文=%s 恢复现行有效（向量快照=%s）", article_no, r)
+    return r

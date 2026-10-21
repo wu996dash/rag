@@ -40,6 +40,7 @@ def main():
     p.add_argument("--no-stream", action="store_true")
     p = sub.add_parser("chat"); p.add_argument("--profile", action="store_true")
     sub.add_parser("eval")
+    p = sub.add_parser("logs"); p.add_argument("-n", type=int, default=30); p.add_argument("--err", action="store_true")
     p = sub.add_parser("feedback"); p.add_argument("--draft", action="store_true"); p.add_argument("--mark", action="store_true")
     a = ap.parse_args()
     if a.cmd == "ping":
@@ -73,6 +74,13 @@ def main():
     elif a.cmd == "eval":
         from .eval_runner import run_retrieval_eval
         sys.exit(run_retrieval_eval())
+    elif a.cmd == "logs":
+        from . import config
+        f = config.REPO / "logs" / ("error.log" if a.err else "app.log")
+        if f.exists():
+            print("\n".join(f.read_text(encoding="utf-8").splitlines()[-a.n:]))
+        else:
+            print("（暂无日志：logs/", f.name, "）")
     elif a.cmd == "feedback":
         from . import feedback
         if a.mark:
