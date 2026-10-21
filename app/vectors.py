@@ -34,9 +34,11 @@ def upsert_articles(name, lo, hi):
     from .m3encode import encode
     meta = config.SOURCES[name]
     recs = [r for r in parse_law(name) if lo <= r["no"] <= hi]
-    texts = [f'{meta["abbr"]}第{r["no"]}条 {r["text"]}' for r in recs]
+    def _label(r):
+        return f'{r["no"]}条之{r["sub"]}' if r.get("sub") else str(r["no"])
+    texts = [f'{meta["abbr"]}第{_label(r).replace("条之","之") if r.get("sub") else _label(r)+"条"} {r["text"]}' for r in recs]
     ds, ss = encode(texts)
-    rows = [{"id": meta["id_base"] + r["no"], "law": meta["law"], "article_no": str(r["no"]),
+    rows = [{"id": meta["id_base"] + r["no"] * 10 + r.get("subn", 0), "law": meta["law"], "article_no": (f'{r["no"]}条之{r["sub"]}' if r.get("sub") else str(r["no"])),
              "part": r["part"], "chapter": r["chapter"], "status": meta["status"],
              "effective_date": meta["effective"], "source_path": meta["path"],
              "text": t, "embedding": d, "sparse": sp} for r, t, d, sp in zip(recs, texts, ds, ss)]

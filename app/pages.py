@@ -15,7 +15,8 @@ def render(name: str, lo: int, hi: int):
     made, skipped = 0, 0
     OUT.mkdir(parents=True, exist_ok=True)
     for r in recs:
-        fn = f'{meta["abbr"]}第{r["no"]}条.md'
+        subx = f'之{r["sub"]}' if r.get("sub") else ""
+        fn = f'{meta["abbr"]}第{r["no"]}条{subx}.md'
         path = OUT / fn
         if path.exists():
             skipped += 1
@@ -25,9 +26,9 @@ def render(name: str, lo: int, hi: int):
         _dft = "（关联制度页待编译）\n- [入口导航](../index.md)"
         linked = LIMITATION_LINKED.get(r["no"], _dft) if meta["abbr"] == "民法典" else _dft
         body = f'''---
-id: article/{meta["slug"]}-{r["no"]}
+id: article/{meta["slug"]}-{r["no"]}{subx}
 type: article
-title: {meta["abbr"]}第{r["no"]}条（{" ".join(x for x in (r["part"], r["chapter"]) if x)}）
+title: {meta["abbr"]}第{r["no"]}条{subx}（{" ".join(x for x in (r["part"], r["chapter"]) if x)}）
 law: {meta["law"]}
 article_no: "{r["no"]}"
 effective_date: {meta["effective"]}

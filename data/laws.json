@@ -79,18 +79,18 @@
   "path": "sources/中华人民共和国刑法_20201226.docx",
   "law": "中华人民共和国刑法",
   "abbr": "刑法",
-  "slug": "law-50468",
+  "slug": "law-52167",
   "id_base": 9000000,
-  "effective": "未登记",
+  "effective": "见文件登记",
   "status": "现行有效"
  },
  "民事诉讼法": {
   "path": "sources/中华人民共和国民事诉讼法_20230901.docx",
   "law": "中华人民共和国民事诉讼法",
   "abbr": "民事诉讼法",
-  "slug": "law-51031",
+  "slug": "law-52168",
   "id_base": 10000000,
-  "effective": "未登记",
+  "effective": "见文件登记",
   "status": "现行有效"
  }
 }

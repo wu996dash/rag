@@ -25,8 +25,9 @@ def events(question: str, history=None, rid: str = "-"):
     t = time.time(); top = rerank(eq, hits, top=5)
     yield {"type": "stage", "stage": "rerank", "ms": int((time.time()-t)*1000),
            "items": [{"law": _norm_law(r["law"]), "no": r["article_no"], "score": r["score"]} for r in top]}
-    L.info("[%s] 检索 nav=%d recall=%d top5=%s", rid, len(nav), len(hits),
-           "/".join(_norm_law(r["law"]) + "第" + r["article_no"] + "条" for r in top))
+    def _disp(r):
+        return _norm_law(r["law"]) + ("第" + r["article_no"] if "条" in r["article_no"] else "第" + r["article_no"] + "条")
+    L.info("[%s] 检索 nav=%d recall=%d top5=%s", rid, len(nav), len(hits), "/".join(_disp(r) for r in top))
     ctx = assemble(question, nav, top, history)
     yield {"type": "stage", "stage": "assemble", "ms": 0, "chars": len(ctx)}
     parts = []

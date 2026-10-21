@@ -14,7 +14,7 @@ def cn2num(s: str) -> int:
             total += num
             num = 0
     return total + num
-ART_RE = re.compile(r"^第([零〇一二三四五六七八九十百千]+)条[　\s]*(.*)$")
+ART_RE = re.compile(r"^第([零〇一二三四五六七八九十百千]+)条(?:之([一二三四五六七八九十]+))?[　\s]*(.*)$")
 HEAD_RE = re.compile(r"^第([零〇一二三四五六七八九十百千]+)([编章节])[　\s]*(.*)$")
 @lru_cache(maxsize=8)
 def parse_law(name: str):
@@ -38,9 +38,11 @@ def parse_law(name: str):
             cur = None
             continue
         if ma:
+            sub = ma.group(2) or ""
             cur = {"law": meta["law"], "abbr": meta["abbr"], "no": cn2num(ma.group(1)),
+                   "sub": sub, "subn": cn2num(sub) if sub else 0,
                    "part": part, "chapter": chap, "section": sec,
-                   "clauses": ([ma.group(2)] if ma.group(2) else [])}
+                   "clauses": ([ma.group(3)] if ma.group(3) else [])}
             recs.append(cur)
             continue
         if cur is not None and p and not p.startswith("第"):

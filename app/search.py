@@ -53,7 +53,8 @@ def _wiki_status(law: str, article_no: str):
     abbr = _ABBR.get(law)
     if not abbr:
         return None
-    fp = config.REPO / "wiki" / "articles" / f"{abbr}第{article_no}条.md"
+    leaf = f"{abbr}第{article_no}.md" if "条" in article_no else f"{abbr}第{article_no}条.md"
+    fp = config.REPO / "wiki" / "articles" / leaf
     if not fp.exists():
         return None
     m = re.search(r"^status:\s*(\S+)\s*$", fp.read_text(encoding="utf-8"), re.M)
