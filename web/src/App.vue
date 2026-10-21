@@ -1,6 +1,7 @@
 <template>
   <div v-if="!me" class="authbox">
     <div class="authcard">
+      <div class="seal">法</div>
       <h2>viki_rag 法律知识库</h2>
       <p class="sub">viki 编译 × RAG 检索 · 每条引用可核对原文</p>
       <input v-model="form.u" placeholder="用户名" @keyup.enter="doAuth(action)"/>
@@ -12,6 +13,7 @@
   </div>
   <div v-else class="shell">
     <aside>
+      <div class="brand"><span class="bmark">⚖</span> viki_rag · 法律智库</div>
       <div class="who">@ {{ me.username }} <em :class="'r'+me.role">{{ me.role === 'admin' ? '管理员' : '用户' }}</em></div>
       <button class="newchat" @click="newChat">＋ 新对话</button>
       <div class="h-title">最近对话（保留 5 条）</div>
@@ -28,7 +30,7 @@
           <div v-if="m.role==='user'" class="bubble">{{ m.text }}</div>
           <template v-else>
             <div class="stages" v-if="m.stages && m.stages.length"><span class="stage" v-for="s in m.stages" :key="s.k">{{ s.k }}<template v-if="s.v"> · {{ s.v }}</template></span></div>
-            <div class="bubble"><div class="disclaimer" v-if="m.notice">{{ m.notice }}</div><div v-html="render(m.text)"></div></div>
+            <div class="bubble"><div class="disclaimer" v-if="m.notice">{{ m.notice }}</div><span class="typing" v-if="!m.text&&!m.done"><i></i><i></i><i></i></span><div v-html="render(m.text)"></div></div>
             <div class="refs" v-if="m.refs && m.refs.length">
               <span v-for="r in m.refs" :key="r.name" class="ref-chip" :class="{bad:r.bad,drop:r.drop}" @click="openPage(r.name)" title="点击核对原文">{{ r.name }}{{ r.drop ? '（已剔除）' : '' }}</span>
             </div>
