@@ -1,7 +1,7 @@
 """FastAPI 服务：认证(MySQL) + 流式问答(WS) + 会话记忆 + 管理员材料录入 + 反馈。
 启动：python -m uvicorn app.api:app --host 127.0.0.1 --port 8100"""
 import asyncio, json, queue, re, threading, time
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Query
+from fastapi import FastAPI, File, Form, Request, UploadFile, WebSocket, WebSocketDisconnect, Query
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from . import config, auth, log
@@ -89,39 +89,65 @@ def page(path: str = Query(...)):
     if not p.exists():
         return JSONResponse({"error": "不存在"}, status_code=404)
     return {"path": rel, "content": p.read_text(encoding="utf-8")}
-# ---------- 管理员：法律材料录入 ----------
-_SAFE = re.compile(r"^[\w\u4e00-\u9fff（）()·-]{2,48}$")
+# ---------- 管理员：法律材料文件上传 ----------
+_ALLOWED_EXT = {".docx", ".md", ".txt"}
+_MAX_BYTES = 20 * 1024 * 1024
+def _dedup(dirpath, fname):
+    from pathlib import Path as _P
+    import os as _os
+    base, ext = _os.path.splitext(fname)
+    cand, n = _P(dirpath) / fname, 2
+    while cand.exists():
+        cand = _P(dirpath) / f"{base}-{n}{ext}"; n += 1
+    return cand
 @app.post("/api/materials")
-async def add_material(req: Request):
+async def add_material(req: Request, file=File(...), effective_date: str = Form("")):
     u = _who(req)
     if not u:
         return JSONResponse({"error": "未登录"}, status_code=401)
     if u["role"] != "admin":
-        L.warning("材料录入被拒 user=%s（非管理员）", u["username"])
+        L.warning("材料上传被拒 user=%s（非管理员）", u["username"])
         return JSONResponse({"error": "仅管理员可录入法律材料"}, status_code=403)
-    b = await req.json()
-    name = str(b.get("name") or "").strip()
-    text = str(b.get("text") or "").strip()
-    edate = str(b.get("effective_date") or "").strip() or time.strftime("%Y%m%d")
-    if not _SAFE.match(name):
-        return JSONResponse({"error": "材料名称需为 2-48 位合法字符"}, status_code=400)
-    if len(text) < 80:
-        return JSONResponse({"error": "正文过短（<80 字），疑似不完整文本"}, status_code=400)
-    safe_date = re.sub(r"[^0-9-]", "", edate) or time.strftime("%Y%m%d")
-    fname = name + "_" + safe_date + ".md"
-    fp = config.REPO / "sources" / fname
-    if fp.exists():
-        return JSONResponse({"error": "同名材料已存在，请走 CLI 更新流程"}, status_code=409)
+    raw_name = (file.filename or "").replace("\\", "/").split("/")[-1]
+    safe = re.sub(r"[^\w\u4e00-\u9fff.\-（）() ]", "", raw_name).strip()
+    import os
+    base, ext = os.path.splitext(safe)
+    ext = ext.lower()
+    if not base or ext not in _ALLOWED_EXT:
+        return JSONResponse({"error": "仅支持 .docx / .md / .txt 文件"}, status_code=400)
+    data = await file.read()
+    if len(data) > _MAX_BYTES:
+        return JSONResponse({"error": "文件超过 20MB"}, status_code=400)
+    if ext == ".docx" and data[:2] != b"PK":
+        return JSONResponse({"error": "docx 文件损坏或非 zip 容器"}, status_code=400)
     stamp = time.strftime("%Y-%m-%d %H:%M")
-    header = ("<!-- 管理端录入 " + stamp + "｜录入人 " + u["username"] +
-              "｜生效日期 " + edate + "｜待人工核对官方渠道 -->\n\n")
-    fp.write_text(header + text + "\n", encoding="utf-8")
+    header = ("<!-- 拖拽上传 " + stamp + "｜上传人 " + u["username"] +
+              "｜生效日期 " + (effective_date or "未登记") + "｜待人工核对官方渠道 -->\n\n")
+    if ext in (".md", ".txt"):
+        try:
+            body_text = data.decode("utf-8")
+        except UnicodeDecodeError:
+            body_text = data.decode("gbk", "ignore")
+        if len(re.sub(r"\s", "", body_text)) < 80:
+            return JSONResponse({"error": "正文过短（<80 字），请确认是完整文本"}, status_code=400)
+        data = (header + body_text).encode("utf-8")
+    fp = _dedup(config.REPO / "sources", safe if ext == ".docx" else (base + ext))
+    fp.write_bytes(data)
+    rel = "sources/" + fp.name
+    n_art = 0
+    try:
+        from .docxload import docx_text
+        text = docx_text(rel) if ext == ".docx" else fp.read_text(encoding="utf-8")
+        n_art = len(re.findall(r"第[零〇一二三四五六七八九十百千]+条", text))
+    except Exception as e:
+        L.warning("材料解析统计失败 %s: %r", rel, e)
     rm = config.REPO / "sources" / "README.md"
     rm.write_text(rm.read_text(encoding="utf-8") +
-                  "\n- " + fname + "｜管理端录入 " + stamp[:10] + "｜待核验｜待编译\n", encoding="utf-8")
-    L.info("材料录入 admin=%s file=%s 字数=%d（待核验待编译）", u["username"], fname, len(text))
-    return {"ok": True, "path": "sources/" + fname,
-            "next": "编译需人工：登记 config.SOURCES 后 python -m app.cli ingest"}
+                  "\n- " + fp.name + "｜管理端上传 " + stamp[:10] + "｜待核验｜待编译\n", encoding="utf-8")
+    L.info("材料上传 admin=%s file=%s 大小=%dKB 检出条文标记=%d（待核验待编译）",
+           u["username"], fp.name, len(data) // 1024, n_art)
+    return {"ok": True, "path": rel, "kb": round(len(data) / 1024), "articles": n_art,
+            "next": "核验后登记 config.SOURCES 再 python -m app.cli ingest 编译"}
 @app.get("/api/materials")
 async def list_materials(req: Request):
     u = _who(req)

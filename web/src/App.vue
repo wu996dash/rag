@@ -47,10 +47,12 @@
     <section v-else class="material">
       <header><h1>法律材料录入<small>（管理员专属）</small><span class="close" @click="matTab=false">✕ 返回问答</span></h1></header>
       <div class="mform">
-        <input v-model="mform.name" placeholder="材料名称，如：最高人民法院关于审理买卖合同纠纷案件适用法律问题的解释"/>
-        <input v-model="mform.date" placeholder="生效日期，如 20260101（可留空取今日）"/>
-        <textarea v-model="mform.text" rows="16" placeholder="粘贴官方全文文本（markdown 或纯文本）。入库仅代表保存登记；编译仍需人工跑 ingest——本入口不做自动编译。"></textarea>
-        <button :disabled="!mform.name||mform.text.length<80||busy" @click="submitMaterial">{{ busy?'提交中…':'录入 sources/' }}</button>
+        <input v-model="mform.date" placeholder="生效日期（可选，如 20260101；一般文件名里就有）"/>
+        <div class="drop" :class="{hot:drag}" @dragover.prevent="drag=true" @dragleave.prevent="drag=false" @drop.prevent="onDrop($event)" @click="$refs.fi.click()">
+          <div class="d1">⬇ 把官方文件拖进来上传</div>
+          <div class="d2">支持 .docx / .md / .txt，≤20MB｜点击也可选择文件<br>上传=保存登记并自动统计条文数；核验与编译仍走人工流程</div>
+        </div>
+        <input ref="fi" type="file" accept=".docx,.md,.txt" style="display:none" @change="onPick"/>
         <p class="err" v-if="mErr">{{ mErr }}</p><p class="okline" v-if="mOk">{{ mOk }}</p>
       </div>
       <div class="mfiles"><b>现有材料</b><div v-for="f in mfiles" :key="f">· {{ f }}</div></div>
@@ -63,7 +65,7 @@ import { ref, nextTick, onMounted } from 'vue'
 import { marked } from 'marked'
 const me=ref(null),form=ref({u:'',p:''}),action=ref('login'),authErr=ref(''),stats=ref(null)
 const messages=ref([]),input=ref(''),busy=ref(false),page=ref(null),mainEl=ref(null)
-const sessions=ref([]),curId=ref(''),matTab=ref(false),mform=ref({name:'',date:'',text:''}),mErr=ref(''),mOk=ref(''),mfiles=ref([])
+const sessions=ref([]),curId=ref(''),matTab=ref(false),mform=ref({date:''}),mErr=ref(''),mOk=ref(''),mfiles=ref([])
 let token=localStorage.getItem('vr_tk')||'',ws=null,convId=''
 const STAGE={rewrite:'查询改写',nav:'制度导航',recall:'混合召回',rerank:'重排',assemble:'上下文',verify:'引用校验'}
 function render(t){return t?marked.parse(t):''}
@@ -126,12 +128,22 @@ async function cast(m,v,withNote){
   api('/api/feedback',{question:m.q,answer:m.text,verdict:v,note:v==='down'?(m.note||''):''})
 }
 async function openPage(name){const r=await fetch('/api/page?path='+encodeURIComponent('wiki/articles/'+name+'.md'),{headers:headers()});page.value=await r.json()}
-async function submitMaterial(){
-  mErr.value='';mOk.value='';busy.value=true
-  const r=await api('/api/materials',mform.value)
-  busy.value=false
+const drag=ref(false)
+function onDrop(e){drag.value=false;const f=e.dataTransfer.files[0];if(f)uploadFile(f)}
+function onPick(e){if(e.target.files[0])uploadFile(e.target.files[0]);e.target.value=''}
+async function uploadFile(f){
+  mErr.value='';mOk.value=''
+  if(!/\.(docx|md|txt)$/i.test(f.name)){mErr.value='仅支持 .docx / .md / .txt';return}
+  if(f.size>20*1024*1024){mErr.value='文件超过 20MB';return}
+  busy.value=true
+  const fd=new FormData();fd.append('file',f);fd.append('effective_date',mform.value.date||'')
+  let r={}
+  try{r=await (await fetch('/api/materials',{method:'POST',headers:{authorization:'Bearer '+token},body:fd})).json()}
+  catch(e){r={error:'网络错误'}}
+  busy.value=false;mform.value.date=''
   if(r.error){mErr.value=r.error;return}
-  mOk.value='已入库：'+r.path+'（编译仍需人工执行 ingest）';mform.value={name:'',date:'',text:''};loadFiles()
+  mOk.value='已入库 '+r.path+'（'+r.kb+'KB'+(r.articles?'，检出条文标记 '+r.articles+' 处':'')+'）——'+r.next
+  loadFiles()
 }
 async function loadFiles(){const r=await api('/api/materials');if(r.files)mfiles.value=r.files}
 async function boot(){
