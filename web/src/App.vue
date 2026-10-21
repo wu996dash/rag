@@ -140,7 +140,7 @@ async function cast(m,v,withNote){
   m.vote=v;m.showNote=false
   api('/api/feedback',{question:m.q,answer:m.text,verdict:v,note:v==='down'?(m.note||''):''})
 }
-async function openPage(name){const r=await fetch('/api/page?path='+encodeURIComponent('wiki/articles/'+name+'.md'),{headers:headers()});page.value=await r.json()}
+async function openPage(name){let r=await (await fetch('/api/page?path='+encodeURIComponent('wiki/articles/'+name+'.md'),{headers:headers()})).json();if(r.error)r=await (await fetch('/api/page?path='+encodeURIComponent('wiki/cases/'+name+'.md'),{headers:headers()})).json();page.value=r}
 const drag=ref(false)
 function onDrop(e){drag.value=false;const f=e.dataTransfer.files[0];if(f)uploadFile(f)}
 function onPick(e){if(e.target.files[0])uploadFile(e.target.files[0]);e.target.value=''}

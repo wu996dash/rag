@@ -14,7 +14,7 @@ def assemble(question, nav_pages, reranked, history=None):
     arts = "\n\n".join(
         f"《{r.get('law') or '中华人民共和国民法典'}》第{r['article_no']}条（{r['status']}）：\n{r['text']}"
         for r in reranked)
-    nav = "\n\n".join(f"=== 制度参考页：{p['title']} ===\n{p['body'][:1600]}" for p in nav_pages[:3])
+    nav = "\n\n".join(f"=== 参考页：{p['title']} ===\n{p['body'][:1600]}" for p in nav_pages[:4])
     ctx = ""
     if history:
         recent = "\n".join(f"用户：{h.get('q','')}\n助手：{(h.get('a') or '')[:400]}" for h in history[-5:])
@@ -28,9 +28,17 @@ def _norm(s):
     return "".join(s.split())
 def verify(answer, reranked, articles_dir, nav_pages=None):
     refs = re.findall(r"REF[:：]\s*《?([^《》\d]{2,30})》?第(\d+)条", answer)
+    case_refs = re.findall(r"REF[:：]\s*指导性案例(\d+)号", answer)
     nav_body = "\n".join(p.get("body", "") for p in (nav_pages or []))
     joined = _norm("\n".join(r["text"] for r in reranked) + nav_body)
     report = {"refs_ok": [], "refs_bad": [], "quotes_dropped": 0}
+    for cn in case_refs:
+        cname = f"指导性案例{cn}号"
+        in_nav = any(cname in (p.get("name", "") or p.get("title", "")) for p in (nav_pages or []))
+        if in_nav and (articles_dir.parent / "cases" / f"{cname}.md").exists():
+            report["refs_ok"].append(cname)
+        else:
+            report["refs_bad"].append(cname)
     from . import config as _cfg
     name_map = {v["law"]: v["abbr"] for v in _cfg.SOURCES.values()}
     name_map.update({v["abbr"]: v["abbr"] for v in _cfg.SOURCES.values()})
