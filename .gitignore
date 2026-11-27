@@ -44,3 +44,6 @@ resume/
 # 成果交付物（报告/PPT 由 build_*.py 生成，产物不进仓库）
 deliverables/
 
+
+# 学习笔记（本地留存，不进公开仓库）
+原理精讲.md

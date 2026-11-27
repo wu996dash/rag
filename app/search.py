@@ -2,6 +2,9 @@
 import re
 from functools import lru_cache
 from . import config
+from .log import get
+
+log = get("search")
 WIKI = config.REPO / "wiki"
 def _bigrams(s):
     s = re.sub(r"[\s　,，。、；;：:（）()【】《》]", "", s)
@@ -22,7 +25,11 @@ def _concepts():
                     "bg": _bigrams(title + heads), "links": links})
     return tuple(out)
 def nav_select(question, topk=3):
-    """M4：制度页向量导航优先，空库回退 bigram。"""
+    """M4：制度页向量导航优先，空库回退 bigram。
+
+    回退（bigram）命中率远低于向量导航，属降级路径而非正常路径；
+    异常必须写 WARNING 日志（2026-10-22 加固），否则向量库/模型故障会静默劣化答案质量。
+    """
     try:
         from .conceptnav import nav_pages
         pages = nav_pages(question, topk + 3)
@@ -32,8 +39,9 @@ def nav_select(question, topk=3):
             picked = concepts + cases
             return [{"name": p["name"], "title": p["title"], "body": p["body"],
                      "bg": set(), "links": set()} for p in picked]
-    except Exception:
-        pass
+        log.warning("制度页向量导航返回空（legal_concepts 未建或为空），回退 bigram 匹配")
+    except Exception as e:
+        log.warning("制度页向量导航异常，回退 bigram（导航质量将下降）：%r", e)
     qb = _bigrams(question)
     scored = []
     for c in _concepts():
