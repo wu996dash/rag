@@ -94,3 +94,11 @@
 - **事故**：一次数据一致性审计脚本自身存在方案混用 bug（新主键 no×10 与旧主键 no 跨条号重叠），误删 1535 行合法向量。**wiki/sources 零损失，向量层按设计可重建**——115 秒全量重建 2493 行，逐法页/向量对齐。
 - **定案**：全库统一新主键 `id_base + no×10 + subn`（附条占 1-9），旧方案行全部清除；任何审计/清理脚本必须先通过"逐法 行数==页数"断言，禁止基于推测定性删除。
 - **教训**：删除操作前必须 dry-run 打印样本人工核对；本次若先打印"待删的民法典 1134 行"即可发现异常。
+
+## D18 运行环境迁移到 Docker（2026-11-02）—— 端口改口 + torch 导入顺序
+
+- **背景**：原环境是"phpstudy 原生 MySQL 3306 + 本机原生 Milvus 19531"。2026-11-02 起基础设施改由 Docker 承载：Milvus（standalone + etcd + minio + redis）映射 **19530**，MySQL 8.0.43 映射 **13306**；原 phpstudy MySQL 与 19531 端的 Milvus 均已不存在。
+- **定案**：`.env` 改 `MILVUS_URI=http://127.0.0.1:19530`、`MYSQL_PORT=13306`（D3/D16 的端口描述随之失效，选型本身不变：仍是 Milvus + MySQL 专用最小权限账号）。Docker MySQL 中重建 `viki_rag` 库与 `viki_rag` 账号（`GRANT ALL ON viki_rag.*`，不用 root），`auth.init_db()` 启动自动建表。
+- **向量层按 D17 重建**：新 Milvus 实例无 `legal_articles` / `legal_concepts`，但 wiki/ 与 sources/ 完好。按现有 sources 重新 parse+embed（2493 条，87s）+ 制度页导航（98 页，9s），逐法行数==页数核对通过。
+- **事故与修复：torch 的 WinError 1114**。现象：`from pymilvus import MilvusClient` 之后再 `import torch` 必崩（`c10.dll` 初始化失败），单独 import torch 正常。根因：pyarrow 包内自带 `msvcp140.dll`，pymilvus→pandas→pyarrow 先加载后，Windows 把这份运行库解析给了 torch。**定案**：`app/__init__.py` 里先 `import torch` 再让其它模块加载，一行排序覆盖 CLI/API/脚本全部入口；不删 pyarrow（pymilvus 需要）。
+- **注**：`get_collection_stats()` 在本版 pymilvus+Milvus 组合下恒返回 `row_count=0`，核对行数一律用 `query(filter="", output_fields=["count(*)"])`，勿据 stats 判断空库。

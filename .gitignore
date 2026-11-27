@@ -31,3 +31,16 @@ eval/feedback.jsonl
 
 # 运行日志（本地留存，不进版本库）
 logs/
+
+# torch 编译缓存（本地生成，与项目无关）
+torchinductor_*/
+
+# 求职私用材料：不属于项目本体，且含个人信息，不进公开仓库
+面试材料/
+resume_slim/
+简历项目.md
+resume/
+
+# 成果交付物（报告/PPT 由 build_*.py 生成，产物不进仓库）
+deliverables/
+

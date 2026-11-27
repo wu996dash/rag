@@ -37,7 +37,7 @@
 - Python 3.12，依赖用 uv 管理（uv sync / uv run pytest），代码风格 ruff；
 - LLM 调用一律走 `app/llm.py` 统一入口（OpenAI 兼容协议，默认通义 Qwen-Plus），端点/模型只从环境变量读取：`LLM_BASE_URL` / `LLM_MODEL`；密钥优先读 `LLM_API_KEY`，未设置则回落系统环境变量 `DASHSCOPE_API_KEY`（本机已有且实测可用，2026-10-19）；不把密钥复制进 .env 或仓库；不硬编码供应商 URL，不散写 HTTP 请求；
 - Embedding 用本地 BGE-M3（FlagEmbedding，1024 维），重排用 bge-reranker-v2-m3；两套权重本机已有（路径在 `.env` 的 `EMBED_MODEL_PATH` / `RERANKER_PATH`），禁止代码触发重复下载；运行设备走 `EMBED_DEVICE`，显存 OOM 时自动降级 CPU 并打日志；
-- 向量库只用 Milvus：连接串 `MILVUS_URI`（默认 `http://127.0.0.1:19531`，本机已运行实例）；collection `legal_articles` 的 schema 以 任务描述.md §6 为准，首次入库由代码自动创建，禁止手工 DDL，禁止引入 Qdrant/FAISS 等其他向量库；
+- 向量库只用 Milvus：连接串 `MILVUS_URI`（默认 `http://127.0.0.1:19530`，Docker 映射实例，D18；旧 19531 已不存在）；collection `legal_articles` 的 schema 以 任务描述.md §6 为准，首次入库由代码自动创建，禁止手工 DDL，禁止引入 Qdrant/FAISS 等其他向量库；
 - CLI 用 argparse，子命令 `ingest|ask|lint`，入口 `python -m app.cli`；
 - 测试：编译、检索、引用校验的核心逻辑必须有 pytest 用例（图节点按下方约定写成纯函数，直接构造 state 断言）；修改 wiki/ 后必须先跑 wiki-lint（断链、孤儿页、frontmatter 缺字段、wiki 与 sources 内容不一致）再提交；eval/ 新增题目必须注明来源与依据条文并跑全量评测确认无回归；
 - 提交信息：动宾短语，简洁；一个流程环节一个提交；

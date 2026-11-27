@@ -16,7 +16,7 @@ uv venv --python 3.12 --system-site-packages .venv
 uv pip install --python .venv pymilvus langgraph python-dotenv pyyaml
 
 # 2) 配置：复制 .env.example 为 .env；密钥用系统环境变量 DASHSCOPE_API_KEY（代码自动回落）
-# 前置条件：本机 Milvus 于 127.0.0.1:19531；BGE-M3 与 bge-reranker 权重路径见 .env
+# 前置条件（Docker，D18）：Milvus 127.0.0.1:19530、MySQL 127.0.0.1:13306；BGE-M3 与 bge-reranker 权重路径见 .env
 
 # 3) 自检
 .\.venv\Scripts\python.exe -m app.cli ping     # Milvus 连通
